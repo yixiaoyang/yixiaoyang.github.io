@@ -40,7 +40,7 @@ tags:
 而一个特定的属性分割训练集而导致熵降低，就是信息增益（infomation gain）的概念。对于系统S当前状态下的熵为`H(X)`，在其特征X中引入新的特征Y进行分割后的熵为`H(X|Y)`。因此特征Y的信息增益为：
 <img src="http://latex.codecogs.com/svg.latex?IG(X|Y)=H(X)-H(X|Y)=H(X)-\sum_{y \epsilon Y}{\frac{|S_y|}{|S|}H(S_y)}">。
 
-其中|S|表示样本总数目，|Sy|表示特征y在样本S中的数目。
+其中\|S\|表示样本总数目，\|Sy\|表示特征y在样本S中的数目。
 
 python实现熵的计算：
 
@@ -111,6 +111,7 @@ Else:
 ```
 
 #### 举个栗子
+
 |day|outlook|temperature|humidity|windy|play|
 |-|-|-|-|-|-|
 |D1|sunny|hot|high|FALSE|no|
