@@ -1,0 +1,129 @@
+---
+author: leon
+comments: true
+date: 2013-10-20 15:03:01+00:00
+layout: post
+slug: rails%e5%b7%a5%e7%a8%8b%e8%ae%b0%e5%bd%95
+title: Rails工程实战记录
+wordpress_id: 73
+categories:
+- Ruby
+tags:
+- Rails
+- Ruby
+- Web
+---
+
+项目git：https://github.com/yixiaoyang/ruby
+为熟悉Rails的基本特性创建的工程，本博文仅作更新记录。
+
+
+### （1）2013.10.1-2013.10.5
+
+
+0. Ruby基本语法demo若干
+1. 创建rails Demo/First工程，了解基本的REST操作及MVC架构。
+2. 创建demo工程的数据资源间的多重关联
+3. 创建rails Sample工程
+4. 创建Sample工程的rspec自动化测试
+5. instant '@title' virible with Embedded Ruby method.
+6. pass title check test using spec-rails
+7. Eliminating duplication with layouts for Home/Contact/About pages
+
+
+
+### （2）2013.10.19-2013.10.20
+
+
+0. 添加bootstrap风格并进行分层现实，自定义基本样式表
+1. 添加users控制器和相关测试脚本。
+2. 添加用户密码验证
+3. 添加user资源：遵从 Rails 使用的 REST 架构，将数据视为资源
+4. 添加user show控制及视图
+5. 添加统一Gravatar头像
+6. 修正具名路由错误：在user/id视图下header的链接路由出错，系具名路由功能没有完善造成
+7. 添加user create功能：添加完成后使用flash提示，ssl需要服务器配置支持暂未部署
+8. 使用更加健壮的数据查找参数：防止用户篡改user中的其他字段，提高安全性
+
+### （3）2013.10.22
+
+1. 添加登录功能：添加登录页面及其控制器session。
+
+
+### (4)2013.10.26
+
+
+尼马从早上十点一直就在编程（中间午饭）到下午三点钟，周末阿周末， 残念...无妹纸陪伴的程序猿你伤不起。。。
+
+
+1. 完成简单的session管理实现登录、注销、注册。
+2. 使用cookie完成记住我功能：session、cookie安全相关技术实现。
+
+
+### （5）2013.10.29
+
+
+1. 添加用户资料的edit操作：资源users更新方法的实现。
+2. 用户权限限制及登录检测：一般用户仅能编辑自己的资料，使用事前过滤器检测用户登录状态和编辑的对象
+3. 更加友好的重定向：在show/edit/update事件执行前使用rails的session记录当前url，在登录后再跳转回来，而不是直接跳转到用户资料show界面。
+
+
+### （6）2013.11.02
+
+
+1. 添加user 404错误定向。
+2. 添加users index现实所有用户的功能：使用will-paginate分页。
+3. 修复edit定向时find_by参数错误导致无法edit的问题。
+4. 添加raker批量添加测试用户数据。
+
+
+### （7）2013.11.03
+
+
+1. 完成micropost REST发送操作：增加一条推文。
+2. 修复页面@title无法生效bug。
+3. 使用新的home布局：整合个人信息和推文feed
+4. 优化页面结构：大量使用局部视图技术替换之前的实现，以完成视图模块分割。
+
+
+### (8)2013-11-06
+
+
+1. 添加follow relationship model：专门用于表示关注和被关注的关系，及展现following-user,follwed-user,relationship之间的复杂模型关系。
+2. 实现关注和被关注人数的计数。
+当然，之前那个数字是假的，现在从真实的relationship中读取关注者和被关注者的数据。
+
+### (9)2013-11-08
+
+
+1. 路由修复：修复路由冗余，添加users的following和listener路由
+2. Follow关系功能完善：显示用户的粉丝和关注列表。
+
+
+
+### (a)2013-11-11
+
+
+1. follow模块更新：添加follow/unfollow按钮。
+
+
+
+### (b)2013-11-15
+
+
+1. ajax实现关注按钮
+
+
+### (c)2013-11-16
+
+
+1. micropost更新：添加feed数据关系，取出一个用户的所有关注者的推文，实现动态推文列表。
+
+贴图:
+
+![http://cdn1.snapgram.co/imgs/2015/07/20/060.png](http://cdn1.snapgram.co/imgs/2015/07/20/060.png) 
+                                                                                                 
+![http://cdn2.snapgram.co/imgs/2015/07/20/055.png](http://cdn2.snapgram.co/imgs/2015/07/20/055.png) 
+                                                                                                 
+![http://cdn1.snapgram.co/imgs/2015/07/20/035.png](http://cdn1.snapgram.co/imgs/2015/07/20/035.png) 
+

@@ -1,0 +1,84 @@
+#
+###################################
+# Site wide configuration
+####################################
+#
+title: Leon's Blog
+email: leon_e@qq.com
+description: Leon's blog site powered by jekyll.
+url: yixiaoyang.github.io
+
+
+#
+###################################
+# Jekyll configuration
+####################################
+#
+timezone:          Europe/Paris
+markdown:          kramdown
+highlighter:       rouge
+excerpt_separator: <!--more-->
+permalink:         /articles/:year-:month/:title
+
+#kramdown:
+#  auto_ids: true
+#  footnote_nr: 1
+#  entity_output: as_char
+#  toc_levels: 1..6
+#  enable_coderay: false
+
+kramdown:
+  auto_ids:       false
+  footnote_nr:    1
+  entity_output:  as_char
+  toc_levels:     1..6
+  smart_quotes:   lsquo,rsquo,ldquo,rdquo
+  input:          GFM
+  hard_wrap:      false
+  footnote_nr:    1
+  tab_width:      4
+  css:            style
+  extensions:
+    - autolink
+    - footnotes
+    - s 
+#
+###################################
+# Site Owner configuration
+####################################
+#
+owner:
+  name: leon@SZ
+  avatar: leonids-logo.png
+  job: "technology & life"
+  bio: "leon's blog site powered by jekyll"
+  email:
+  disqus-shortname: leon
+  twitter: #username
+  facebook: #username
+  google:
+    plus: #username
+    analytics:
+    verify:
+    ad-client:
+    ad-slot:
+  bing-verify:
+  github: #username
+  gitlab: #username
+  stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
+  linkedin: #username
+  skype: #username
+  xing: #username
+  instagram: #username
+  lastfm: #username
+  tumblr: #username
+  pinterest: #username
+  foursquare: #username
+  steam: #username
+  dribbble: #username
+  youtube: #username
+  soundcloud: #username
+  weibo: #username
+  flickr: #username
+  500px: #username
+  codepen: #username

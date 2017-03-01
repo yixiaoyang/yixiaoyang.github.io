@@ -1,0 +1,62 @@
+---
+author: leon
+comments: true
+date: 2013-12-04 17:09:06+00:00
+layout: post
+slug: '%e7%ae%80%e5%8e%86%e7%b3%bb%e7%bb%9f-rails'
+title: "简历系统 on Rails\uFEFF\uFEFF"
+wordpress_id: 213
+categories:
+- Ruby
+tags:
+- Biz
+- Rails
+---
+
+此简历系统源自[深圳Biz团队](https://www.jiandan.biz/)的招聘题目，参考文章[零零碎碎的Rails细节](http://hityixiaoyang.com/2013/12/02/%e9%9b%b6%e9%9b%b6%e7%a2%8e%e7%a2%8e%e7%9a%84rails%e7%bb%86%e8%8a%82/)。实现时主要使用了ajax，排序，状态机等技术。没有加cache和文件上传功能，邮件通知功能一直没配置正确无法发出邮件，很奇怪。
+
+git：[https://github.com/yixiaoyang/ruby/tree/master/rails/rails_project/BizInviteSys](https://github.com/yixiaoyang/ruby/tree/master/rails/rails_project/BizInviteSys)
+
+主页：
+
+[![主页](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/052.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/052.png)
+
+找回密码：
+
+[![找回密码](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/053.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/053.png)
+
+个人首页：
+
+[![个人首页](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/054.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/054.png)
+
+个人简历预览：
+
+[![个人简历预览](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/055.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/055.png)
+
+技能选择：
+
+[![技能选项](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/056.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/056.png)
+
+教育经历：
+
+[![教育经历](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/057.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/057.png)
+
+个人资料：
+
+[![个人资料等](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/058.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/058.png)
+
+简历投递：
+
+[![简历投递](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/059.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/059.png)
+
+管理员-所有简历，可按照指定列排序：
+
+[![管理员-所有简历](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/060.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/060.png)
+
+管理员-评论打分：
+
+[![管理员-评论](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/061.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/061.png)
+
+管理员-状态更改：
+
+[![管理员-状态更改](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/062.png)](http://blog.apluslogicinc.com/wp-content/uploads/2013/12/062.png)

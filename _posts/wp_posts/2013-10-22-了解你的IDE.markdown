@@ -1,0 +1,54 @@
+---
+author: leon
+comments: true
+date: 2013-10-22 16:24:51+00:00
+layout: post
+slug: '123'
+title: 了解你的IDE
+wordpress_id: 123
+categories:
+- 软件工程
+tags:
+- IDE
+- 编程
+---
+
+早上又浏览了一下《`程序员必须知道的97件事`》，有一条说道，了解你的编译器。糟糕的程序员的一般步骤是：
+
+
+
+	
+  * Edit code
+
+	
+  * Compile it
+
+	
+  * Check errors and warnings
+
+	
+  * Compile again
+
+	
+  * Something magical happened
+
+	
+  * Download/use the binary
+
+
+哈哈，好一个something magical happened，在学习编译原理和不熟悉使用的IDE之前，我也是这么想的，然后觉得程序最后好用就行了。直到有一天，在 使用一个类Eclipse IDE环境修改一个pppoe sessionID生成引起的bug时，问题来了。
+
+原本版本的`sessinID`哈希查找函数为`get_SessionByID（hash_head，id，src_eth）`,
+根据RFC3315还是多少这个是确定方式少了一个确定元素即本机mac地址，于是相应添加三元组确定，这个函数改成了这样`get_SessionByID（hash_
+h ead，id，src_eth，dst_eth)`，然后我非常相信IDE和编译器，使用IDE的`Open Call 
+Hierarchy`功能查找并修改了“所有”引用这个接口的地方，编译无error无warning，链接，测试。然后“修正版”软件被发给了焦急等待的用户更新使用。
+
+当天下午，一个同事在测试ddns时，无意发现pppoe client在连接后，只要一点击断开，整个协议栈内核进程便会挂掉。也就是说产品不可用状态。如此重大的bug把组长G哥吓了一跳，急急忙忙跟他去测试房确认bug，回来用栈回溯工具dump，招呼我过去说，我确定而且肯定的说是你昨天修正的bug出了问题，接着指着dumpy结果给我看。
+
+于是整个下午，我一边搭建测试环境重现现场，一边复查代码，无意中我再用grep查了一下那个接口的引用，发现居然有一处还是老版本的`get_SessionByID（
+h ash_head，id，src_eth）`引用！于是直接给跪了。按理说，以前用gcc，arm-linux-gcc，sparc-elf-
+gcc都没有出现函数缺少参数而不报警/错的情况，但是，mips64-inux-gnu-gcc工具链却真的没有报警/错(
+也有可能是编译选项没选上，或者编译警告级别过低引起)。其次，要人命的IDE Open Call 
+Hierarchy功能并不能查找到所有的函数引用！于是这种严重的软件错误再度被漏掉。
+
+或许这种情况比较少见，但是很多时候我们都过多相信IDE甚至是编译器，或者，一段黑盒子的代码，而不是认真的做**code review**。

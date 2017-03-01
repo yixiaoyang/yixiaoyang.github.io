@@ -1,0 +1,82 @@
+---
+author: leon
+comments: true
+date: 2013-11-25 14:38:47+00:00
+layout: post
+slug: '%e3%80%90%e6%90%ac%e8%bf%90%e3%80%91c%e6%b5%ae%e7%82%b9%e6%95%b0%e6%af%94%e8%be%83-%e8%80%83%e8%af%95'
+title: C浮点数比较.考试
+wordpress_id: 189
+categories:
+- c
+
+tags:
+- C
+- 笔试
+---
+
+**用"=="来**比较**两个double应该**相等**的**类型**，返回真值完全是不确定的**。计算机对浮**点数**的进行计算的原理是只保证必要精度内正确即可。
+我们在**判断**浮**点数****相等**时，推荐用范围来确定，若x在某一范围内，我们就认为**相等**，至于范围怎么定义，要看实际情况而已了，float,和double 各有不同
+所以const float EPSINON = 0.00001;
+   if((x >= - EPSINON) && (x <= EPSINON) 这样**判断**是可取的至于为什么取0.00001，可以自己按实际情况定义。
+比如要**判断**浮**点数**floatA和B是否**相等**，我们先令float  x = A –B ;
+并设constfloat EPSINON = 0.00001;  则
+
+    
+    if ((x >= - EPSINON)&& (x <= EPSINON)
+        cout<<”A 与B相等<<endl;
+    else
+        cout<<”不相等”<<endl;
+
+
+根据上面分析建议在系统开发过程中设计到字符转换建议采用double**类型**，精度设置为%.8lf即可，在**比较**浮**点数**十建议EPSINON= 0.00000001
+
+_参考：_
+[http://www.verydemo.com/demo_c128_i8089.html](http://www.verydemo.com/demo_c128_i8089.html)
+[http://how-to.wikia.com/wiki/Howto_compare_floating_point_numbers_in_the_C_programming_language](http://how-to.wikia.com/wiki/Howto_compare_floating_point_numbers_in_the_C_programming_language)
+
+
+### Description [![](data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D)](http://how-to.wikia.com/wiki/Howto_compare_floating_point_numbers_in_the_C_programming_language?action=edit&section=1)
+
+
+It is very usual for the [C programming language](http://how-to.wikia.com/wiki/C_programming_language) beginners to compare a [floating point number](http://how-to.wikia.com/wiki/Floating_point_number) using the "==" operator. Floating point numbers must not be compared with the "==" operator.
+That is mainly because when you compute a float number you will get a result like 1.543645274878272 and if you compare 1.543645274878272 with 1.5436, the result will always be false.
+
+    
+    1.543645274878272 != 1.5436
+
+
+
+
+### Solution using a function [![](data:image/gif;base64,R0lGODlhAQABAIABAAAAAP///yH5BAEAAAEALAAAAAABAAEAQAICTAEAOw%3D%3D)](http://how-to.wikia.com/wiki/Howto_compare_floating_point_numbers_in_the_C_programming_language?action=edit&section=2)
+
+
+Instead of comparing float numbers with the "==" operator, you can use a function like this one.
+
+    
+    //compares if the float f1 is equal with f2 and returns 1 if true and 0 if false
+     int compare_float(float f1, float f2){
+      float precision = 0.00001;
+      if (((f1 - precision) < f2) && 
+          ((f1 + precision) > f2)){
+        return 1;
+       }
+      else{
+        return 0;
+       }
+     }
+    // or
+    bool fequal(float a, float b){
+     return fabs(a-b) < epsilon;
+    }
+    
+    /* 
+     * You can set the precision of the comparison between the floating point numbers by 
+     * changing the "precision" variable.
+     */
+    if (compare_float(x1,x2)){
+    }
+    else{
+    }
+
+
+PS:公司今年开始季度的工程师能力测试，简单来说就是做蛋疼笔试题，搞得像计算机二级考试一样。你懂的。。。

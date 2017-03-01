@@ -1,0 +1,133 @@
+---
+author: leon_e@163.com
+comments: false
+date: 2015-03-20 02:40:55+00:00
+layout: post
+slug: nios-nios-pio%e4%b8%ad%e6%96%ad%e5%a4%84%e7%90%86
+title: '[NIOS] NIOS Pio中断处理'
+wordpress_id: 369
+categories:
+- FPGA
+tags:
+- NIOS
+- 驱动
+---
+
+使用NIOS PIO中断响应外部信号
+
+### 寄存器定义
+
+
+[![nios_pio_reg_def](http://cdn2.snapgram.co/imgs/2015/07/20/nios_pio_irq_def.png)](http://cdn2.snapgram.co/imgs/2015/07/20/nios_pio_irq_def.png)
+
+### edgecapture Register
+
+
+Bit n in the  edgecapture register is set to 1 whenever an edge is detected on input port n. An Avalon-MM master peripheral can read the  edgecapture register to determine if an edge has occurred on any of the PIO input ports. **If the option `Enable bit-clearing for edge capture register` is turned off, writing any value to the  edgecapture register clears all bits in the register. Otherwise, writing a 1 to a particular bit in the register clears only that bit.**
+
+
+The type of edge(s) to detect is fixed in hardware at system generation time. The edgecapture register only exists when the hardware is configured to capture edges. If the core is not configured to capture edges, reading from  edgecapture returns an undefined value, and writing to  edgecapture has no effect.
+
+
+### PIO定义
+
+[![nios_pio_irq_def](http://cdn1.snapgram.co/imgs/2015/07/20/nios_pio_reg_def.png)](http://cdn1.snapgram.co/imgs/2015/07/20/nios_pio_reg_def.png)
+
+### 编程模式
+
+  1. 使能中断。对mask寄存器对应位set。
+  
+  2. 清edgecapture寄存器，设置中断处理函数。
+
+  3. 进入中断函数后先读取eadecapture的值，查看对应触发的位进行相应处理。
+
+  4. 退出中断处理函数前清除edgecapture寄存器。
+
+```cpp
+    void init_pio()
+    {
+        /* Enable all interrupts */
+        IOWR_ALTERA_AVALON_PIO_IRQ_MASK(PARALLEL_INPUT_IRQ_16_BASE,
+                PIO_IRQ_PLOT_EN | PIO_IRQ_FO_WR_DONE | PIO_IRQ_DDR3_RD_REQ);
+    
+        /* Reset the edge capture register */
+        IOWR_ALTERA_AVALON_PIO_EDGE_CAP(PARALLEL_INPUT_IRQ_16_BASE, 0xFFFF);
+    
+    #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
+        alt_ic_isr_register(PARALLEL_INPUT_IRQ_16_IRQ_INTERRUPT_CONTROLLER_ID,
+                PARALLEL_INPUT_IRQ_16_IRQ,  /* 硬件中断号，NIOS中定义 */
+                handle_irq_pio16_input,     /* 中断handler */
+                edge_capture_ptr,           /* 用于存储edgecapture寄存器内容*/
+                0);
+    #endif
+    }
+    #ifdef ALT_ENHANCED_INTERRUPT_API_PRESENT
+    
+    /**
+     * @param context 存储edgecapture值的位置
+     *
+     * @ note: Bit n in the  edgecapture register is set to 1 whenever an edge is detected on input port n.
+     * An Avalon-MM master peripheral can read the  edgecapture register to determine if an edge has
+     * occurred on any of the PIO input ports. If the option Enable bit-clearing for edge capture register
+     * is turned off, writing any value to the  edgecapture register clears all bits in the register.
+     * Otherwise, writing a 1 to a particular bit in the register clears only that bit. The type of edge(s)
+     * to detect is fixed in hardware at system generation time. The edgecapture register only exists when
+     * the hardware is configured to capture edges. If the core is not configured to capture edges, reading
+     * from  edgecapture returns an undefined value, and writing to  edgecapture has no effect.
+     */
+    void handle_irq_pio16_input(void* context)
+    {
+        /* Cast context to edge_capture's type. It is important that this
+        be declared volatile to avoid unwanted compiler optimization. */
+        volatile int* edge_capture_ptr = (volatile int*) context;
+    
+        /*
+        * Read the edge capture register on the button PIO.
+        * Store value.
+        */
+        *edge_capture_ptr = IORD_ALTERA_AVALON_PIO_EDGE_CAP(PARALLEL_INPUT_IRQ_16_BASE);
+    
+        /* 中断处理 */
+        if (*edge_capture_ptr & PIO_IRQ_PLOT_EN) {
+            handle_irq_plot_en();
+        }
+        if (*edge_capture_ptr & PIO_IRQ_FO_WR_DONE) {
+            handle_irq_fo_wr_done();
+        }
+        if (*edge_capture_ptr & PIO_IRQ_DDR3_RD_REQ) {
+            handle_irq_ddr3_read_req();
+        }
+    
+    
+        /* Write to the edge capture register to reset it. */
+        /*IOWR_ALTERA_AVALON_PIO_EDGE_CAP(PARALLEL_INPUT_IRQ_16_BASE, 0);*/
+        IOWR_ALTERA_AVALON_PIO_EDGE_CAP(PARALLEL_INPUT_IRQ_16_BASE, 0xFFFF);
+    
+    
+        /* Read the PIO to delay ISR exit. This is done to prevent a
+        spurious interrupt in systems with high processor -> pio
+        latency and fast interrupts. */
+        IORD_ALTERA_AVALON_PIO_EDGE_CAP(PARALLEL_INPUT_IRQ_16_BASE);
+    }
+    
+```
+
+### 测试
+
+将pio irq接到pio output上，控制pio output的高低即可模拟外部中断信号的输入。
+
+```cpp
+int main(){
+    ...
+        while(1){
+            test_trigger_pio(PIO_IRQ_PLOT_EN,0);
+            /* sleep for 1sec */
+            usleep(3000000);
+    
+            test_trigger_pio(PIO_IRQ_PLOT_EN,1);
+            /* sleep for 1sec */
+            usleep(3000000);
+        }
+    ...
+    }
+```

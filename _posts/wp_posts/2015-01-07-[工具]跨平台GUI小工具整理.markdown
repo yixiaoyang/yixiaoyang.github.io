@@ -1,0 +1,31 @@
+---
+author: leon_e@163.com
+comments: false
+date: 2015-01-07 12:10:58+00:00
+layout: post
+slug: '%e5%b7%a5%e5%85%b7-%e8%b7%a8%e5%b9%b3%e5%8f%b0gui%e5%b0%8f%e5%b7%a5%e5%85%b7%e6%95%b4%e7%90%86'
+title: '[工具] 跨平台GUI小工具整理'
+wordpress_id: 356
+categories:
+- 工具
+tags:
+- 工具
+---
+
+平时找一些小软件时可选择的不是很多，可用的用起来又不方便，所以偶尔会写点GUI的小工具，在此共享出来。
+
+1）简单四象限Todo程序
+
+2）简单股价报表监控和历史分析程序
+
+现仅编译出了gentoo X86和Win7 X64程序，其他平台的自己编译去吧。
+
+百度盘： [http://pan.baidu.com/share/link?shareid=2863041641&uk=1477349933](http://pan.baidu.com/share/link?shareid=2863041641&uk=1477349933)
+
+源码：[https://github.com/yixiaoyang/QTodo.git ](https://github.com/yixiaoyang/QTodo)，[https://github.com/yixiaoyang/QStock.git](https://github.com/yixiaoyang/QStock)
+
+预览：
+
+[![QStock截图](http://cdn2.snapgram.co/imgs/2015/07/20/QStock.png)](http://cdn2.snapgram.co/imgs/2015/07/20/QStock.png)
+
+[![Qtodo截图](http://cdn2.snapgram.co/imgs/2015/07/20/Qtodo.png)](http://cdn2.snapgram.co/imgs/2015/07/20/Qtodo.png)

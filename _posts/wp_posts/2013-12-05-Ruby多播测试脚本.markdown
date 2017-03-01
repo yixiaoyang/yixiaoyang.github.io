@@ -1,0 +1,143 @@
+---
+author: leon
+comments: true
+date: 2013-12-05 16:30:21+00:00
+layout: post
+slug: '%e5%a4%9a%e6%92%ad%e6%8a%a5%e6%96%87%e6%b5%8b%e8%af%95-ruby'
+title: Ruby多播测试脚本
+wordpress_id: 218
+categories:
+- Ruby
+- Network
+tags:
+- Ruby
+- 嵌入式
+- 程序猿
+- 编程
+---
+
+对python不太很熟悉，而且迷上ruby，都是脚本语言，基本的功能基本重合，因此使用Ruby编写多播测试程序，很好用~
+
+**（1）igmp socket server：**监听套接字上的报文，在固定端口上收到igmp报文后统计信息并打印。之后退出。
+
+    
+    =begin
+      Send IGMP join/membership pkt and wait for ms, then thread exit
+      by xiaoyang 03Dec13
+    =end
+    
+    require 'socket'
+    require 'ipaddr'
+    require 'yaml'
+    
+    # read config
+    config = YAML::load(File.open('config.yaml'))
+    PORT = config["igmp"]["port_start"]
+    TEST_CASE_CNT = config["igmp"]["max_sock"]
+    
+    sThreads = []
+    
+    # mcast_addr 224.1.0.1~224.1.1.127
+    (0..TEST_CASE_CNT).each do |n|
+    	mcast_addr = "224.1.1.#{n}"
+    	port = PORT + n
+    
+    	ip = IPAddr.new(mcast_addr).hton + IPAddr.new("0.0.0.0").hton
+    	sock = UDPSocket.new
+    	sock.setsockopt(Socket::IPPROTO_IP, Socket::IP_ADD_MEMBERSHIP,ip)
+    	sock.bind(Socket::INADDR_ANY, port)
+    
+    	sThreads[n] = Thread.start do
+    		p "thread #{n} #{sThreads[n]} send igmp membership then waiting."
+    		# recv two messages then join thread
+    		msg,info = sock.recvfrom(1024)
+    		puts "MSG: #{msg} from #{info[2]} (#{info[3]}/#{info[1]}/size:#{msg.size})"
+    	end
+    
+    	sleep 0.5
+    end
+    
+    sThreads.each do |t|
+    	p "thread #{t} join."
+    	t.join
+    end
+
+
+** （2）igmp client：**往套接字上发送报文后统计信息并打印。之后退出。配合server.ry测试。
+
+    
+    =begin
+      Send IGMP message via socket
+      by xiaoyang 03Dec13
+    =end
+    require 'socket'
+    require 'ipaddr'
+    require 'yaml'
+    
+    # read config
+    config = YAML::load(File.open('config.yaml'))
+    PORT = config["igmp"]["port_start"]
+    TEST_CASE_CNT = config["igmp"]["max_sock"]
+    
+    # mcast_addr 224.1.0.1~224.1.1.127
+    (0..TEST_CASE_CNT).each do |n|
+    	mcast_addr = "224.1.1.#{n}"
+    	port = PORT + n
+    
+    	sock = UDPSocket.open
+    	sock.setsockopt(Socket::IPPROTO_IP, Socket::IP_TTL, [1].pack('i'))
+    
+    	# send out msg 
+    	p "send igmp msg count #{n} on port #{port}"
+    	sock.send(ARGV.join(' '),0, mcast_addr, port)
+    
+    	begin
+    	ensure
+    		sock.close
+    	end
+    end
+
+
+** （3）yaml配置文件：**使用了简洁好用的yml配置文件（相对于繁琐的xml~）管理公用配置。
+
+    
+    igmp:
+        max_sock: 127
+        port_start: 5000
+    mcast_sender:
+        cnt: 256
+
+
+** （4）多播业务数据报文发送脚本：**可模拟IPTV等应用发送多播报文。
+
+    
+    require 'socket'
+    require 'ipaddr'
+    require 'yaml'
+    
+    # read config
+    config = YAML::load(File.open('config.yaml'))
+    PORT = config["igmp"]["port_start"]
+    TEST_CASE_CNT = config["igmp"]["max_sock"]
+    PKT_CNT = config["mcast_sender"]["cnt"]
+    
+    #TEST_CASE_CNT = 4
+    # mcast_addr 224.1.0.1~224.1.1.127
+    (0..TEST_CASE_CNT).each do |n|
+      mcast_addr = "224.1.1.#{n}"
+      port = 9000
+    
+      begin
+        sock = UDPSocket.open
+        sock.setsockopt(Socket::IPPROTO_IP, Socket::IP_TTL,[20].pack('i'))
+        p "send igmp msg count #{n} on port #{port}"
+        sock.send( "Hello gentle readers",0, mcast_addr, port)
+      ensure
+        sock.close
+      end
+    end
+
+
+git：[https://github.com/yixiaoyang/ruby/tree/master/testScript/RubyMcastTest](https://github.com/yixiaoyang/ruby/tree/master/testScript/RubyMcastTest)
+
+

@@ -1,0 +1,341 @@
+---
+author: leon_e@163.com
+comments: false
+date: 2015-04-22 02:34:58+00:00
+layout: post
+slug: python%e7%94%9f%e6%88%90%e5%99%a8%e5%92%8c%e8%bf%ad%e4%bb%a3%e5%99%a8
+title: '[Python]生成器和迭代器'
+wordpress_id: 375
+categories:
+- python
+tags:
+- python
+---
+
+《Python高级编程》第2章节，目标：
+
+- 自定义迭代器
+- 生成器yield关键字理解
+- 生成器send函数理解
+
+### 可迭代对象/迭代器
+
+当你建立了一个列表，你可以逐项地读取这个列表，这叫做一个可迭代对象。他基于两个方法:
+1. `next()` 返回容器的下一个项目， 遍历完成，对象抛出StopIteration异常
+2. `__iter__` 返回容器本身
+
+   
+```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''
+output:
+D:\Python27\python.exe C:/Users/xiaoyang/PyProject/Parser58/iterator.py
+3
+2
+1
+0
+
+Process finished with exit code 0
+'''
+
+class MyIterator(object):
+    def __init__(self,step):
+        self.step = step
+    def next(self):
+        if self.step == 0:
+            raise StopIteration
+        self.step -= 1
+        return self.step
+    def __iter__(self):
+        return self
+
+for el in MyIterator(4):
+    print el
+```
+
+### 生成器
+
+**生成器就是一种迭代器**。 生成器使得需要返回一系列元素的函数所需的代码更加简单、高效。基于`yield`指令，可以暂停一个函数并返回中间结果，该函数将保存执行环境并可以在必要时恢复。
+
+```python
+'''
+D:\Python27\python.exe C:/Users/xiaoyang/PyProject/Parser58/iterator.py
+Traceback (most recent call last):
+    File "C:/Users/xiaoyang/PyProject/Parser58/iterator.py", line 42, in <module>
+[0] test iterator
+    print (generator.next())
+StopIteration
+
+
+[1] test generator
+0
+1
+2
+
+Process finished with exit code 1
+'''
+def get_yield_0_1_2():
+    a, b, c = [0,1,2]
+    yield a
+    yield b
+    yield c
+
+print "[1] test generator"
+generator = get_yield_0_1_2()
+print (generator.next())
+print (generator.next())
+print (generator.next())
+print (generator.next())
+```
+
+生成器函数在每次暂停执行时，函数体内的所有变量都将被封存(freeze)在生成器中，并将在恢复执行时还原，并且类似于闭包，即使是同一个生成器函数返回的生成器，封存的变量也是互相独立的。
+我们的小例子中并没有用到变量，所以这里另外定义一个生成器来展示这个特点：
+
+    
+```python
+'''
+output:
+[2] test generator
+[0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+[3] test generator
+[1, 2, 3, 5, 8, 13, 21, 34, 55, 89]
+
+
+Process finished with exit code 0
+'''
+# test generator2
+def fibonacci():
+    a, b = [0, 1]
+    yield a
+    yield b
+    while True:
+        a, b = b, a+b
+        tmp = yield b
+        # reset
+        if (tmp == 0):
+            a, b = [0, 1]
+            yield a
+            yield b
+
+fib = fibonacci()
+
+
+print "[2] test generator"
+print ([fib.next() for x in range(10)])
+
+
+print "[3] test generator"
+list = []
+fib.send(0)
+fib.send(1)
+for num in fib:
+    if num > 100:
+        break;
+    list.append(num)
+print list
+    
+```
+
+Python 2.5对生成器的增强实现了协程的其他特点，在这个版本中，生成器加入了如下方法：
+1. **send**(value):
+send是除next外另一个恢复生成器的方法。Python 2.5中，yield语句变成了yield表达式，这意味着yield现在可以有一个值，而这个值就是在生成器的send方法被调用从而恢复执行时，调用send方法的参数。
+
+  1. ** close**():
+这个方法用于关闭生成器。对关闭的生成器后再次调用next或send将抛出StopIteration异常。
+
+  2. ** throw**(type, value=None, traceback=None):
+这个方法用于在生成器内部（生成器的当前挂起处，或未启动时在定义处）抛出一个异常。
+
+
+### 生成器表达式
+
+生成器表达式也称作genexp，使用类似列表推倒的方式减少了序列代码的总量。它和常规生成器一样每次输出一个元素，所以整个序列和推导列表一样不会提前进行计算。
+
+```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+'''
+0
+4
+16
+36
+64
+
+Process finished with exit code 0
+'''
+
+# section 2.2
+iter = (x**2 for x in range(10) if x%2 == 0)
+for el in iter:
+    print el
+```
+
+
+### itertools模块
+
+当python提供生成器特性后，就为实现常见模式提供了一个新的模块itertools。itertools覆盖了许多模式，例如islice、tee、groupby等。
+参照文档：[itertools — Functions creating iterators for efficient looping](https://docs.python.org/3/library/itertools.html)
+
+#### islice
+
+定义
+
+```python
+def islice(iterable, *args):
+    # islice('ABCDEFG', 2) --> A B
+    # islice('ABCDEFG', 2, 4) --> C D
+    # islice('ABCDEFG', 2, None) --> C D E F G
+    # islice('ABCDEFG', 0, None, 2) --> A C E G
+    s = slice(*args)
+    it = iter(range(s.start or 0, s.stop or sys.maxsize, s.step or 1))
+    nexti = next(it)
+    for i, element in enumerate(iterable):
+        if i == nexti:
+            yield element
+            nexti = next(it)
+```
+
+#### tee
+
+往返式迭代器，迭代器将消费其处理的序列，但不会往回处理。
+Return n independent iterators from a single iterable. Equivalent to:
+
+
+```python
+def tee(iterable, n=2):
+    it = iter(iterable)
+    deques = [collections.deque() for i in range(n)]
+    def gen(mydeque):
+        while True:
+            if not mydeque:             # when the local deque is empty
+                newval = next(it)       # fetch a new value and
+                for d in deques:        # load it to all the deques
+                    d.append(newval)
+            yield mydeque.popleft()
+    return tuple(gen(d) for d in deques)
+```
+
+
+Once tee() has made a split, the original iterable should not be used anywhere else; otherwise, the iterable could get advanced without the tee objects being informed.
+This itertool may require significant auxiliary storage (depending on how much temporary data needs to be stored). In general, if one iterator uses most or all of the data before another iterator starts, it is faster to use list() instead of tee().
+
+
+#### groupby
+
+类似Unix的uniq命令，可以对来自一个迭代器的重复元素进行分组，只要这些元素是相邻的，还可以提供一个函数执行元素的比较。否则将采用标识符进行比较。
+应用：`RLE编码`
+
+```python
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+compress result:
+('h', 1)
+('e', 3)
+('l', 2)
+('o', 1)
+(' ', 1)
+('w', 1)
+('o', 1)
+('r', 1)
+('l', 1)
+('d', 32)
+decompress result:
+heeello worldddddddddddddddddddddddddddddddd
+'''
+##RLE codec using groupby
+from itertools import groupby
+def rle_compress(data):
+    return ((name,len(list(group))) for name,group in groupby(data))
+def rle_decompress(data):
+    return (ch*size for ch,size in data)
+
+dataStr = 'heeello worldddddddddddddddddddddddddddddddd'
+compressed = rle_compress(dataStr)
+print("compress result:")
+for data in list(compressed):
+    print(data)
+
+print("decompress result:")
+compressed = rle_compress(dataStr)
+decompressed = list(rle_decompress(compressed))
+str=''.join(decompressed)
+print(str)
+```
+
+定义：
+
+```python
+<code class="python">class groupby:
+    # [k for k, g in groupby('AAAABBBCCDAABBB')] --> A B C D A B
+    # [list(g) for k, g in groupby('AAAABBBCCD')] --> AAAA BBB CC D
+    def __init__(self, iterable, key=None):
+        if key is None:
+            key = lambda x: x
+        self.keyfunc = key
+        self.it = iter(iterable)
+        self.tgtkey = self.currkey = self.currvalue = object()
+    def __iter__(self):
+        return self
+    def __next__(self):
+        while self.currkey == self.tgtkey:
+            self.currvalue = next(self.it)    # Exit on StopIteration
+            self.currkey = self.keyfunc(self.currvalue)
+        self.tgtkey = self.currkey
+        return (self.currkey, self._grouper(self.tgtkey))
+    def _grouper(self, tgtkey):
+        while self.currkey == tgtkey:
+            yield self.currvalue
+            self.currvalue = next(self.it)    # Exit on StopIteration
+            self.currkey = self.keyfunc(self.currvalue)
+```
+
+
+### 协同程序
+
+参考文档：[Tasks and coroutines](https://docs.python.org/3/library/asyncio-task.html)
+协同程序是可以挂起、恢复，并且有多个进入点的函数。
+
+
+```python
+
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+'''
+2015-04-21 15:06:25.863941
+2015-04-21 15:06:26.863998
+2015-04-21 15:06:27.864056
+2015-04-21 15:06:28.864113
+2015-04-21 15:06:29.864170
+2015-04-21 15:06:30.864227
+
+'''
+import asyncio
+import datetime
+
+
+# Decorator to mark coroutines.
+@asyncio.coroutine
+def display_date(loop):
+    end_time = loop.time() + 5.0
+    while True:
+        print(datetime.datetime.now())
+        if(loop.time()+1.0) >= end_time:
+            break
+        yield from asyncio.sleep(1)
+
+loop = asyncio.get_event_loop()
+loop.run_until_complete(display_date(loop))
+loop.close()
+    
+```
+
+### Tips
+
+**保持代码简单，而不是数据**: 拥有许多简单的处理序列值的可迭代函数。要比一个复杂的、每次计算一个值的函数更好
+
+
+

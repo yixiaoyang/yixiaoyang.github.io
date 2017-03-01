@@ -1,0 +1,281 @@
+---
+author: leon
+comments: true
+date: 2013-12-05 16:16:42+00:00
+layout: post
+slug: '%e5%b5%8c%e5%85%a5%e5%bc%8fc%e5%9f%ba%e7%a1%80%e5%a4%8d%e4%b9%a0'
+title: 嵌入式C基础复习
+wordpress_id: 216
+categories:
+- c
+---
+
+为对付公司内部的工程师能力考核，复习一下c，类似面试题目，你懂得。以下程序均通过简单的单元测试。
+
+    
+    #include <stdio.h>
+    #include <stdlib.h>
+    
+    #define TEST(func,cnt,test) do{ 
+            printf("-------------Test %d %-16sn",cnt++,func); 
+            test(); 
+        }while(0)
+    
+    /**
+     * 1.判断是否是2的幂
+     */
+    void is2Power_test() {
+        int idx = 0;
+        int arr[16] = {0};
+    
+        srand(time());
+        for(idx = 0; idx < sizeof(arr)/sizeof(arr[0]); idx++) {
+            arr[idx] = rand()%64;
+            printf("%-6d %-4sn",arr[idx], (arr[idx]-1)&(arr[idx])?" ":"*" );
+        }
+    }
+    
+    /**
+     * 2.swap 宏
+     */
+    /// SWAP(a,a)会出问题,SWAP2(a,a) ok
+    #define SWAP(x,y)   do{ 
+            y = x + y;      
+            x = y - x;      
+            y = y - x;      
+        }while(0)
+    #define SWAP2(x,y)   do{ 
+            if(x == y) break; 
+            y = x + y;      
+            x = y - x;      
+            y = y - x;      
+        }while(0)
+    void swap_test() {
+        int x = 10;
+        int y = 32;
+        printf("orgi x=%d, y=%dn",x,y);
+        SWAP(x,y);
+        printf("swap x=%d, y=%dn",x,y);
+        SWAP(x,y);
+        printf("swap x=%d, y=%dn",x,y);
+    }
+    
+    /**
+     * 3.浮点数比较
+     */
+    int floadCmp(float f1, float f2, double precision) {
+        if(f1 > f2+precision) {
+            /* f1>f2 */
+            return 1;
+        } else if(f1 < f2-precision) {
+            /* f1<f2*/
+            return -1;
+        } else {
+            return 0;
+        }
+    }
+    void floadCmp_test() {
+        printf("%.8f, %.8f, %2dn", 0.123456789,0.123456788, floadCmp(0.123456789,0.123456788, 0.000001));
+        printf("%.8f, %.8f, %2dn", 0.123455123,0.123455224, floadCmp(0.123455123,0.123455224, 0.000001));
+        printf("%.8f, %.8f, %2dn", 0.123456123,0.123456123, floadCmp(0.123456123,0.123456123, 0.000001));
+        printf("%.8f, %.8f, %2dn", 0.123456123,0.123456123, floadCmp(0.123455123,0.123456123, 0.000001));
+        printf("%.8f, %.8f, %2dn", 0.12345,0.12340, floadCmp(0.12345,0.12340, 0.000001));
+        printf("%.8f, %.8f, %2dn", 0.123456,0.123457, floadCmp(0.123456,0.123457, 0.000001));
+    }
+    
+    /**
+     * 4.指针、内存和数组
+     */
+    void mem_size_show(char a[32]) {
+        printf("mem-size %dn",sizeof(a));
+    }
+    
+    char* mem_get_str() {
+        /// 指向常量区内存
+        char*p = "hello world";
+        return p;
+    }
+    
+    char* mem_get_str2() {
+        /// 动态分配内存
+        char p[] = "hello world";
+        return p;
+    }
+    
+    char mem_free_without_null() {
+        char* m = malloc(32);
+        strcpy(m, "hello mem");
+        printf("m = %sn",m);
+        free(m);
+        /* m = NULL */
+        /// 野生指针你好
+        /** if(m) {
+            strcpy(m, "hello NULL");
+            printf("m = %sn",m);
+        }*/
+    }
+    
+    void mem_test() {
+        int idx = 0;
+        char a[32] = {8};
+        mem_size_show(a);
+    
+        for(idx = 0; idx < 8; idx++) {
+            /** Tips: 内存指向常量区，每次返回的地址和值都相同 */
+            printf("  test mem1 %08x, val %sn",  mem_get_str(),mem_get_str());
+            /** Tips: 内存指向堆栈区，每次返回的地址和内容不可预测，乱码 */
+            printf("  test mem2 %08x, val %sn",  mem_get_str2(),mem_get_str2());
+        }
+    
+        mem_free_without_null();
+    }
+    
+    /**
+     * 4.大小端
+     */
+    void endien_test() {
+        typedef union _t_union {
+            char ch;
+            int integer;
+        } t_union;
+        t_union test_union;
+        test_union.ch = 1;
+        printf("%s endienn", test_union.integer?"Little":"Big");
+    }
+    /**
+     * 算法1：输出一个给定整数的所有和的组合如5,输出1,4; 2,3，相加的数不能重复
+     * 思路 ：分治，递归
+     */
+    
+    /**
+     * 算法2：在10亿个浮点数中选出其中最大的10000个
+     * 思路 ：外部排序
+     */
+    
+    /**
+     * 算法3：给定两个数组和他们的大小，求交集将其放在一个给定的内存区。
+     * 思路 ：倒排，搜索引擎
+     */
+    
+    /**
+     * 算法4：快排
+     * 思路 ：切割，递归，分治
+     */
+    void qsort_array_print(unsigned int *array, unsigned int size) {
+        unsigned int idx = 0;
+        for(idx = 0; idx < size; idx++) {
+            printf("%d ",array[idx]);
+            if(idx%10 == 9) {
+                printf("n");
+            }
+        }
+        printf("n");
+    }
+    
+    static int qsort_array_split_sort(unsigned int *array, unsigned int start, unsigned int end) {
+        int qmid = start-1;
+        unsigned int qend = start;
+        int x = array[end];
+    
+        /// left half < x, right half >= x
+        while(qend < end) {
+            if(array[qend] < x) {
+                SWAP2(array[qend], array[qmid+1]);
+                qmid++;
+            }
+            qend++;
+        }
+    
+        SWAP2(array[qmid+1], array[end]);
+        qmid = (qmid == start-1) ? qmid+1 : qmid;
+    
+        return qmid;
+    }
+    
+    static void qsort_array_do(unsigned int *array, unsigned int start, unsigned int end) {
+        int split = start;
+        if(end - start <= 1) {
+            return ;
+        }
+        split = qsort_array_split_sort(array, start, end);
+    
+        /// 全部相等
+        if(split < 0 || split >= end) {
+            return ;
+        }
+    
+        qsort_array_do(array, start, split);
+        qsort_array_do(array, split+1, end);
+    }
+    
+    void qsort_unit_test(int* array, unsigned int size) {
+        static cnt = 0;
+        printf("----------test array %d init----------n",cnt);
+        qsort_array_print(array, size);
+        printf("----------test array %d gogo----------n",cnt);
+        qsort_array_do(array, 0, size-1);
+        qsort_array_print(array, size);
+        printf("----------test array %d over----------n",cnt);
+        cnt++;
+    }
+    
+    void qsort_test() {
+        int array1[] = {0,56,8,12,95,7,2,99,50,45,105,1088};
+        int array2[] = {1,2,3,4,5,6,7,8,9,10};
+        int array3[] = {10,9,8,7,6,5,4,3,2,1};
+        int array4[] = {8,8,8,8,8,8,8,8,8,8};
+        int array5[128];
+        int idx = 0;
+    
+        qsort_unit_test(array1,sizeof(array1)/sizeof(array1[0]));
+        qsort_unit_test(array2,sizeof(array2)/sizeof(array2[0]));
+        qsort_unit_test(array3,sizeof(array3)/sizeof(array3[0]));
+        qsort_unit_test(array4,sizeof(array4)/sizeof(array4[0]));
+    
+        srand(time());
+        do {
+            array5[idx] = rand()%1024;
+        } while(idx++ < 128);
+        qsort_unit_test(array5,sizeof(array5)/sizeof(array5[0]));
+    
+        return 0;
+    }
+    
+    /**
+     * 杂项
+     */
+    void more_test() {
+        char c = 128;
+        unsigned short s = 10;
+        /// Tips:char 128即0x100,最高位为负数,所以输出int时是-128
+        printf("char(128)=%d(%%d -128)n",c);
+        printf("~short(10)=%u, %08x, %d(%%u 4294967285)n",~s, ~s, ~s);
+    }
+    
+    void string_arr_test() {
+        int idx = 0;
+        char arr[4][32] = {"ifconfig","eth1","inet","208.254.254.254"};
+        for(idx = 0; idx < 4; idx++) {
+            printf("idx:%d %sn", idx, arr[idx]);
+        }
+    }
+    /**
+     * Entry
+     */
+    int main() {
+        int idx = 0;
+        TEST("is2Power_test",   idx, is2Power_test);
+        TEST("swap_test",       idx, swap_test);
+        TEST("floadCmp_test",   idx, floadCmp_test);
+        TEST("more_test",       idx, more_test);
+        TEST("qsort_test",      idx, qsort_test);
+        TEST("mem_test",        idx, mem_test);
+        TEST("endien_test",     idx, endien_test);
+    
+        return 0;
+    }
+
+
+
+
+

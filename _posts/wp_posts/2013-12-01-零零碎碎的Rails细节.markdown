@@ -1,0 +1,194 @@
+---
+author: leon
+comments: true
+date: 2013-12-01 16:32:59+00:00
+layout: post
+slug: '%e9%9b%b6%e9%9b%b6%e7%a2%8e%e7%a2%8e%e7%9a%84rails%e7%bb%86%e8%8a%82'
+title: 零零碎碎的Rails细节
+wordpress_id: 201
+categories:
+- Ruby
+tags:
+- Rails
+- 招聘
+---
+
+周末几乎没怎么闲着，昨天花了大概8+小时，今天12+小时做一个招聘系统，手生就是很蛋疼，各种细节的东西都需要找E文档和stackoverflow.com
+
+**（1）Rails框架工具**
+
+model更改字段或者类型：magration搞定，自己写up和down事件。例如：
+
+    
+    class ChangeEducationsFieldForDegreeTemplates < ActiveRecord::Migration
+      def up
+        change_column :educations, :degree, :integer
+        add_column   :educations, :stime,  :datetime
+        add_column   :educations, :etime,  :datetime
+      end
+      def down 
+        change_column :educations, :degree, :string
+      end
+    end
+
+
+跳过model使用scaffold：rails g scaffold skill --skip以此类推
+
+**（2）现场编辑推荐**
+
+使用best-in-place editing  ref: [http://railscasts.com/episodes/302-in-place-editing](http://railscasts.com/episodes/302-in-place-editing)
+gem 'jquery-ui-rails'
+gem 'best_in_place', github: 'bernat/best_in_place'
+/app/assets/javascripts/application.js
+
+    
+    //= require jquery
+    //= require jquery_ujs
+    //= require jquery-ui
+    //= require best_in_place
+    //= require_tree .
+
+
+application.css
+
+    
+    To require all jQuery UI modules, add the following to your application.js:
+    //= require jquery.ui.all
+    Also add the jQuery UI CSS to your application.css:
+    /*
+     *= require jquery.ui.all
+     */
+
+
+/app/assets/javascripts/users.js.coffee
+
+    
+    jQuery ->
+      $('.best_in_place').best_in_place()
+
+
+/app/views/users/show.html.erb
+
+    
+      <%= best_in_place @user, :name %>
+
+
+**（3）model取出时间类字段一直返回2000-01-01的问题**
+
+后来上satackoverflow才知道是字段类型的问题，应该使用datetime代替date。
+
+[http://stackoverflow.com/questions/7515398/utc-time-resets-to-2000-01-01-ruby-how-do-i-prevent-the-time-from-resetting](http://stackoverflow.com/questions/7515398/utc-time-resets-to-2000-01-01-ruby-how-do-i-prevent-the-time-from-resetting)
+
+    
+    You are using the Time class. This class deals with times, not dates. My guess is that your database column is of type time as well.
+    I recommend you use a datetime (or possibly timestamp) column type.
+
+
+**（4）关于招聘系统的题目**
+
+其实是来自Biz的公司招聘，所以用业余时间实现了一下。附招聘信息，可以看看Rails偏前端的一些必备能力
+
+    
+    公司概况
+    
+    深圳市简单互联网科技有限公司，base深圳福田车公庙。创始人包括全职人员我，兼职人员（分别从事管理软件咨询、产品运营）两位，投资人一位偶尔串门。
+    我自认是个非常靠谱而且Nice的主，都说慈不掌兵，但是要我在我自己都还没把握的期间就坑人入伙，我过不了自己那关。现在好多了，最艰难、压力最 大的起步阶段基本都由我一个人消化完。主要产品简单BIZ现在已经进入推广及稳定期间，软件的发展势头良好，用户反馈也还可以。因为我了解深圳的物价水
+    平，我尊重而不会压榨员工，新员工跟我将会是一样的工资水平，保证生活绝对没有问题（具体见后文待遇部分）。
+    
+    主要产品
+    简单BIZ（https://www.jiandan.biz） - 优雅地记录项目、客户与财务，生成报告。
+        针对SOHO一族（或称自由职业者）及10人以下创业微小企业，提供简单、方便而实用的项目（销售）管理软件。
+    这是一种新的管理软件分类，既不是ERP也不是CRM，跟团队协作有点沾边，但是侧重于CRM。都说是很新奇（或说怪异），但要先问一下各位谁用过 专门给创业群体设计的销售管理软件？所以我说创业群体用的管理软件就该是这个样子，它一点也不怪异，我们做的就是一个新东西，“这东西就是为创业群体而设 计”。
+    不怕被大家笑话，现在看到的产品从UI、Rails到服务器运维都是由我一人负责，随着产品上线，还得设计营销推广，日渐心力交瘁。
+    目前的问题在于用户规模还比较小，规划在未来两三个月里将软件功能基本到位（主要是高级版功能），就可以寻求较大范围的媒体推广了。
+    如果用户数目标顺利达到，将在3-4个月后寻求A轮融资，半年内搞定并再次扩大团队规模。我自己是金融出身，身边做投融资的前辈及同学不少，又有投资人打包票，请放心。
+    
+    产品理念
+        专注目标用户；
+        规范，不失个性；
+        简约，而不平凡；
+    这个阶段谈公司文化啥的就太扯了。不过如果有机会发展，我会努力将公司打造成一个工程师主导、有情怀而开放的公司。
+    
+    招聘岗位
+    Ruby on rails开发人员
+    职责
+        服务器效率、安全优化，监控部署，数据备份；
+        负责配套的admin panel（管理面板）开发；
+        完成分配的Ticket（包括feature和bug）；
+        与团队成员一起讨论决定产品功能及实现方案；
+        与用户建立联系，帮助用户解决问题；
+    
+    要求
+        必备
+            使用Git管理代码；
+            熟悉HTML+CSS；
+            Rails入门水平就好（会有培训）；
+            有Web应用开发半年经验以上；
+            足够的基本知识；
+            愿意承受创业压力；
+            认同公司产品理念；
+            不畏惧命令行操作；
+            愿意学习新东西；
+            能够自觉找方法解决问题；
+            不说谎、不隐瞒；
+    
+            [  ] 态度（40分）：
+            [  ] 能力（20分）：
+        特别加分项（每项20分，共100分）：
+            [  ] 文字及表达能力优秀（需附材料）；
+            [  ] 能够独立绘制UI（需附材料）；
+            [  ] 有移动端（iOS、Android）开发能力；
+            [  ] 熟练掌握Angular、Backbone、Ember等前端技术；
+            [  ] 拥有并维护2个开源项目以上（需附项目地址）；
+        一般加分项（每项10分，共60分）：
+            [  ] 使用Mac或者Linux一年以上；
+            [  ] 精通Sass（或Less）；
+            [  ] 精通Jquery（或CoffeeScript）；
+            [  ] 有美工能力，能改图、修图；
+            [  ] 贡献2个开源项目以上；
+            [  ] 撰写技术博客3个月或10篇以上；
+    
+        总分220分，只要拿到必备的60分就可以投简历。
+    为了考核Rails基本能力，有如下习题，请完成后将文章地址附在邮件简历中（也可先发简历，文章慢慢写）：
+        在博客之类任意文章撰写平台（必须支持代码高亮），以Rails为开发语言，以该招聘启事为指导，写下实现一个 可递交应聘信息的web应用 所需的步骤，需要达到以下要求：
+        - 能够让用户勾选符合自己的项，并且填入email等基本信息。
+        - 管理员可以看到每个候选人的提交并且设置标记。
+        - 候选人可以查看到自己提交的信息状态。
+    
+    从rails new xx开始，主要考察文字表达能力、命名习惯和开发设计逻辑，不要求UI。
+    提示：需要哪些基本信息？几个标记状态管理员的相关功能怎么放置？候选人怎么查看自己提交的信息？
+        PS：只是对习题感兴趣的朋友也可以分享交流哈。
+    
+    试用期：2个月，试用期间无股份，待遇8折。
+    工作时间：每天8小时，上下班时间自由（Flexible Working），不打卡。
+    
+    待遇：
+        股份：0到7%。扣除基本分后每20分可得1%股份，例如你60分就无股份，160分那就拿5%的股份
+        工资：所有员工（包括我）都一样，都是税前额度5K（不交五险一金可直接拿到5K，交的话4K不到）
+    
+    PS
+        关于股份：待够一年可拿到承诺的所有股份，每个季度转让承诺份额的25%（前三季度签股份代持，最后一季度末可正式转让也可继续由我代持，转让公证费用自付）。
+        关于五险一金：很多人都说五险一金交了还不如直接把企业交的和自己交的都拿到自己钱包里存起来（从算法上来说确实如此，但是政策一天三变，只能说不可预期），我们不反对不鼓励，由员工自行决定。
+        简历投递地址：ivan@jiandan.biz
+        QQ：118153353
+    
+    也欢迎有意来深圳发展的Rubyist投，公司可提供住宿。
+    该招聘信息 截至2013年12月5日 。
+    这篇告示起草、编辑了整整一个下午，大家应当也能从内容中看到我的认真。盼顶。
+
+
+
+
+不写了，早点睡觉～
+
+
+
+
+
+
+
+
+
+
+
+

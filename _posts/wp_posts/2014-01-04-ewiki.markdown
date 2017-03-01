@@ -1,0 +1,15 @@
+---
+author: leon
+comments: true
+date: 2014-01-04 07:41:59+00:00
+layout: post
+slug: ewiki%e5%bb%ba%e7%ab%99%e4%ba%86
+title: eWiki建站了
+wordpress_id: 242
+---
+
+由于又开始弄Embedded Linux相关的东西，写文档就是个问题，因此在服务器上建立了eWiki站点。对比了doduwiki和mediawiki，还是使用了比较简洁一点的doduwiki。mediawiki则比较老牌，经典。购买的主机比较挫，redmine是建不起来了。等Mark把vps权限开通后有时间再弄一下。
+
+现在eWiki仅有Beaglebone开发的一些内容，以后开发相关的过程一般都会在上面作文档记录。欢迎来访 [wiki](http://www.holocene-instrument.com/wiki/doku.php)～
+
+
