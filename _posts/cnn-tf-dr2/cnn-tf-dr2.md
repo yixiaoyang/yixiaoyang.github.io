@@ -1,19 +1,3 @@
----
-author: leon
-comments: true
-date: 2017-03-15 00:19:09+00:00
-layout: post
-title: '卷积神经处理手写数字识别问题-TensorFlow实现'
-categories:
-- 机器学习
-tags:
-- 神经网络
-- 机器学习
-- CNN
-- tensorFlow
----
-
-
 
 kaggle上的入门问题，mnist手写识别，用cnn + tensorflow实现一遍，参考：https://www.kaggle.com/c/digit-recognizer
 
@@ -55,8 +39,8 @@ print (np.unique(labels))
 print(labels.shape)
 ```
 
-[0 1 2 3 4 5 6 7 8 9]  
-(42000, 1)  
+    [0 1 2 3 4 5 6 7 8 9]
+    (42000, 1)
 
 
 降维后独热编码
@@ -66,16 +50,16 @@ print(labels.shape)
 '''
 @func       one-hot encoding: convert label vector[?,1] to [?, 10]
             Convert class labels from scalars to one-hot vectors.
-
+            
             0 => [1 0 0 0 0 0 0 0 0 0]
             1 => [0 1 0 0 0 0 0 0 0 0]
             ...
             9 => [0 0 0 0 0 0 0 0 0 1]
 
-            The input to this transformer should be a matrix of integers, denoting the
-            values taken on by categorical (discrete) features. The output will be a
-            sparse matrix where each column corresponds to one possible value of one
-            feature. It is assumed that input features take on values in the
+            The input to this transformer should be a matrix of integers, denoting the 
+            values taken on by categorical (discrete) features. The output will be a 
+            sparse matrix where each column corresponds to one possible value of one 
+            feature. It is assumed that input features take on values in the 
             range [0, n_values).
 '''
 def dense_to_one_hot(labels_dense, num_classes=10):
@@ -95,8 +79,8 @@ train_labels = dense_to_one_hot(labels_flat)
 print (labels.shape)
 ```
 
-(42000,)  
-(42000, 1)  
+    (42000,)
+    (42000, 1)
 
 
 
@@ -196,20 +180,20 @@ print(hpool2_flat.get_shape())
 print(h_fc1.get_shape())
 ```
 
-(?, 28, 28, 1)  
-(?, 28, 28, 32)  
-(?, 14, 14, 32)  
-(?, 14, 14, 64)  
-(?, 7, 7, 64)  
-(?, 3136)  
-(?, 1024)  
+    (?, 28, 28, 1)
+    (?, 28, 28, 32)
+    (?, 14, 14, 32)
+    (?, 14, 14, 64)
+    (?, 7, 7, 64)
+    (?, 3136)
+    (?, 1024)
 
 
 
 ```python
-# Dropout removes some nodes from the network at each training stage.
+# Dropout removes some nodes from the network at each training stage. 
 # Each of the nodes is either kept in the network with probability
-# keep_prob or dropped with probability 1 - keep_prob. After the
+# keep_prob or dropped with probability 1 - keep_prob. After the 
 # training stage is over the nodes are returned to the NN with their
 # original weights.
 keep_prob = tf.placeholder(tf.float32)
@@ -234,8 +218,8 @@ accuracy = tf.reduce_mean(tf.cast(correct_prediction, tf.float32))
 predict = tf.arg_max(y_conv,1)
 ```
 
-(?, 10)  
-(?, 10)  
+    (?, 10)
+    (?, 10)
 
 
 
@@ -248,22 +232,22 @@ for i in range(400):
     idx_start = i * batch_n
     idx_end = idx_start + batch_n
     train_x, train_y = images[idx_start:idx_end],train_labels[idx_start:idx_end]
-
+    
     # test training accuracy
     if i % 100 == 99:
-        feed_dict = {x: train_x, y: train_y, keep_prob: 1.0}
+        feed_dict = {x: train_x, y: train_y, keep_prob: 1.0} 
         train_accuracy = accuracy.eval(feed_dict=feed_dict)
         print("step %d, training accuracy %g" % (i, train_accuracy))
-
+    
     # train batch
     feed_dict = {x: train_x, y: train_y, keep_prob: 1.0}
     train_step.run(feed_dict = feed_dict)
 ```
 
-step 99, training accuracy 0.9  
-step 199, training accuracy 0.89  
-step 299, training accuracy 0.9  
-step 399, training accuracy 0.96  
+    step 99, training accuracy 0.9
+    step 199, training accuracy 0.89
+    step 299, training accuracy 0.9
+    step 399, training accuracy 0.96
 
 
 
@@ -274,8 +258,7 @@ test_images /= 255.0
 print(test_images.shape)
 ```
 
-(28000, 784)  
-
+    (28000, 784)
 
 
 
@@ -290,7 +273,8 @@ for i in range(test_images.shape[0]/batch_n):
 print('predicted_lables({0})'.format(len(predicted_lables)))
 ```
 
-predicted_lables(28000)  
+    predicted_lables(28000)
+
 
 
 ```python
@@ -301,4 +285,14 @@ for i in range(14):
     plt.title(int(predicted_lables[i]),color="blue")
 ```
 
-![cnn-mnist-handwriting.png](http://cdn4.snapgram.co/images/2017/03/17/cnn-mnist-handwriting.png)
+
+![png](output_20_0.png)
+
+
+
+```python
+print("done")
+```
+
+    done
+
