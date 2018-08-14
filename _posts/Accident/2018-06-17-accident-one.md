@@ -16,7 +16,7 @@ tags:
 
 最近重新审视了交通事故预测问题的解决方法，觉得太简单粗暴，很多预处理没有做到位，连准确率和召回率都土里土气地手写还不知道写错没有，k-fold交叉验证不存在的仅仅代码硬编码切了两部分数据集哈哈。现在尝试用sklearn和tensorflow工具重新做一下模型。原文在此 ![https://yixiaoyang.github.io/articles/2016-12/rnn](https://yixiaoyang.github.io/articles/2016-12/rnn)
 
-首先审题，是一个预测问题，还是一个分类问题。
+首先审题，是一个预测问题，还是一个分类问题。我们的目的是预测交通事故，所以是预测类的回归模型。
 
 ## 导入数据
 
@@ -739,7 +739,6 @@ acc_prepared.shape
 acc_prepared[10:14]
 ```
 
-
 检查预处理后的数据
 
     array([[ 3.81346997, -0.06465394,  0.2651457 ,  0.49370108, -0.21958904,
@@ -756,49 +755,15 @@ acc_prepared[10:14]
             26.        ]])
 
 
+### 用分类器分类看看
 
-### 建立模型
+####  Linear Regression
 
-#### Linear Reggression
-
-
-```python
-from sklearn.metrics import precision_score
-from sklearn.metrics import recall_score
-from sklearn.metrics import f1_score
-from sklearn.metrics import fbeta_score
-
-def acc_predict(model, dataset, labels):
-    label_values = labels.values
-    predict = model.predict(dataset)
-    predict_num = np.array([int(x) for x in predict])
-    print( "precision:", precision_score(label_values, predict_num, average='weighted') )
-    print( "recall:", recall_score(label_values, predict_num, average='weighted') )
-    print( "f1:", f1_score(label_values, predict_num, average='weighted') )
-    print( "fbeta 0.5:", fbeta_score(label_values, predict_num, beta=0.5, average='weighted') )
-    print( "fbeta 1.0:", fbeta_score(label_values, predict_num, beta=1, average='weighted') )
-    #在预测数据中存在实际类别没有的标签时报UndefinedMetricWarning
-```
-
-
-```python
-from sklearn.linear_model import LinearRegression
-
-linear_reg = LinearRegression()
-linear_reg.fit(acc_prepared, acc_labels)
-```
-
-
-### 评估
-按照预测模型，计算预测值，分类，计算准确率、召回率
+先按照分类任务去做看看，将事故数据0,1,2,3次分别分作四类，建立分类器，看看分类出来的“预测”效果咋样。暂时先不做k-fold交叉验证只在测试集上看分类效果。
 
 
 ```python
 from sklearn.model_selection import cross_val_score
-```
-
-
-```python
 from sklearn.linear_model.stochastic_gradient import SGDClassifier
 
 import warnings
@@ -821,12 +786,13 @@ cv_scores(clf_linear, acc_prepared, acc_labels)
 
 查看线性分类器的准确率和召回率
 
-    [0.92433911 0.06927985 0.9247606  0.92514833 0.92557078 0.92557078
-     0.92557078 0.92557078]
+```
+[0.92433911 0.92433911 0.9247606  0.92557078 0.92557078 0.92557078
+ 0.92557078 0.92557078]
 
-    [0.85440278 0.85440278 0.00480408 0.85589944 0.85668126 0.85668126
-     0.85668126 0.85668126]
-
+[0.86751744 0.85440278 0.85518217 0.85668126 0.85668126 0.85668126
+ 0.85668126 0.        ]
+```
 
 #### Random Forest
 
@@ -841,15 +807,75 @@ cv_scores(clf_rf, acc_prepared, acc_labels)
 
 相比之下随机林的准确率和召回率看起来高多了
 
+```
+[0.92433911 0.92433911 0.9247606  0.92557078 0.92557078 0.92420091
+ 0.92557078 0.44383562]
 
-    [0.99361896 0.99361896 0.99407205 0.99452305 0.99452055 0.99452055
-     0.99452055 0.94931507]
+[0.85440278 0.85440278 0.85518217 0.85668126 0.85668126 0.85658676
+ 0.85668126 0.82889293]
+```
 
-    [0.98777608 0.98777608 0.98861115 0.98944685 0.98944449 0.98944449
-     0.98944449 0.99050402]
+### 回归模型
 
+用（T_min, T_max)去预测T_max+1时间的输出。
+
+#### Linear Reggression
+
+先写分数评估函数
+
+```python
+from sklearn.metrics import precision_score
+from sklearn.metrics import recall_score
+from sklearn.metrics import f1_score
+from sklearn.metrics import fbeta_score
+
+def acc_predict(model, dataset, labels):
+    label_values = labels.values
+    predict = model.predict(dataset)
+    predict_num = np.array([int(x) for x in predict])
+    print( "precision:", precision_score(label_values, predict_num, average='weighted') )
+    print( "recall:", recall_score(label_values, predict_num, average='weighted') )
+    print( "f1:", f1_score(label_values, predict_num, average='weighted') )
+    print( "fbeta 0.5:", fbeta_score(label_values, predict_num, beta=0.5, average='weighted') )
+    print( "fbeta 1.0:", fbeta_score(label_values, predict_num, beta=1, average='weighted') )
+    #在预测数据中存在实际类别没有的标签时报UndefinedMetricWarning
+```
+
+因为要使用（T_min, T_max)去预测T_max+1时间的输出所以需要队训练数据“掐头去尾”。
+
+
+```python
+from sklearn.linear_model import LinearRegression
+
+acc_prepared_rows = acc_prepared.shape[0]
+acc_prepared = acc_prepared[:acc_prepared_rows-1,]
+print(acc_prepared.shape)
+
+acc_labels = acc_labels[1:]
+print(acc_labels.shape)
+
+data_len = acc_prepared.shape[0]
+train_idx = int(data_len/2)
+print(train_idx)
+linear_reg = LinearRegression()
+linear_reg.fit(acc_prepared[:train_idx,], acc_labels[:train_idx,])
+
+acc_predict(linear_reg, acc_prepared[train_idx:,], acc_labels[train_idx:,])
+```
+
+回归分数看来结果不太理想，聊胜于无
+
+```
+8765
+precision: 0.8076608288229538
+recall: 0.8986995208761123
+f1: 0.8507516012331187
+fbeta 0.5: 0.8243624919032663
+fbeta 1.0: 0.8507516012331187
+mse: 0.13175906913073238
+```
 
 ### TODO
 
-- 使用RNN模型
+- 使用RNN做回归
 - Grid Search / fine-tune Hyperparameter

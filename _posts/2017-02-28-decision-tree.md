@@ -6,10 +6,8 @@ layout: post
 title: '决策树中的信息增益度量'
 categories:
 - 机器学习
-- 算法
 tags:
 - 机器学习
-- 算法
 ---
 
 ### 决策树模型
