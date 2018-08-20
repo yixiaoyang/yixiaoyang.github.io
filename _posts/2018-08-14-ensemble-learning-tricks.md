@@ -187,7 +187,33 @@ y_pred = sum(tree.predict(X_new) for tree in (tree_reg1, tree_reg2, tree_reg3))
 ```
 
 
+**Greedy Function Approximation: A gradient Boosting Machine**论文中给出的Gradient Boost基础算法流程如下：
 
+1. 初始化损失函数
+$$
+F_0(x) = arg min_p \sum_{1=1}^N {L(y_i,p)}
+$$
+
+
+2. 逐步构建子模型，对于每个模型m（最多M个模型）
+
+
+$$
+\hat y_i  = -\Bigl[{\frac{\partial L(y_i,F(x_i))}{\partial F(x_i)}} \Bigr] _{F(x)=F_{m-1}(x)}  ，(i=1,N)
+$$
+
+
+$$
+a_m=argmin_{a,\beta} \sum_{i=1}^N[\hat{y_i}-\beta h(x_i;a)]^2)
+$$
+
+$$
+\rho_m = argmin_{\rho}\sum_{i=1}^NL(y_i, F_{m-1}(x_i)+\rho h(x_i;a_m))
+$$
+
+$$
+F_m(x) = F_{m-1}(x)+\rho_m h(x;a_m)
+$$
 ### FT
 
 
@@ -201,4 +227,5 @@ y_pred = sum(tree.predict(X_new) for tree in (tree_reg1, tree_reg2, tree_reg3))
 
 ### 参考
 - Hands-On Machine Learning with Scikit-Learn and TensorFlow
-- 
+- Greedy Function Approximation: A gradient Boosting Machine
+  
