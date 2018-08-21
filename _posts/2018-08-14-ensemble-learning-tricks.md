@@ -10,7 +10,7 @@ tags:
 - 机器学习
 ---
 
-集成学习最基本的思想是构建多个分类器，用某种策略将多个结果集成，输出最终学习的结果。
+集成学习最基本的思想是构建多个分类器，用某种策略将多个结果集成，输出最终学习的结果。相比单个的模型，集成学习模型由于学习了多个子模型，会获得“更好一点”的结果。Kaggle上的大杀器`XGBoost`和`Random Forest`分别均属于集成学习模型。
 
 ## Voting Classifiers：多分类器角度
 
@@ -22,6 +22,7 @@ tags:
 
 >  When sampling is performed with replacement, this method is called bagging1 (short for bootstrap aggregating). When sampling is performed without replacement, it is called pasting
 
+![](images/ensemble-learning-bagging-pasting.png)
 
 sk-learn中的BaggingClassifier使用：
 
@@ -92,6 +93,8 @@ Boosting为了增加训练集的多样性，采取了更复杂的抽样方法。
 > training instances is then increased. A second classifier is trained using the updated weights 
 > and again it makes predictions on the training set, weights are updated, and so on 
 
+![](images/adaboost.png)
+
 #### 算法描述
 
 1. Draw a random subset of training samples `d1` without replacement from training set `D` to train a weak learner `C1`.
@@ -156,7 +159,11 @@ ada_clf.fit(X_train, y_train)
 
 `Gradient Boosting = Gradient Descent + Boosting`，Gradient Boost与传统的Boost的区别是，每一次的计算是为了减少上一次的残差(residual)，而为了消除残差，在残差减少的梯度(Gradient)方向上建立一个新的模型。每个新的模型的生成是为了使之前模型的残差往梯度方向减少，与传统Boost对正确、错误的样本进行加权有着很大的区别。 
 
-**Hands-On Machine Learning with Scikit-Learn and TensorFlow**中手动实现了一个简单的Gradient Boosted Regression Trees (GBRT)例子，通过多次对错分集进行训练得到多个子模型，最后对各个子模型输出`求和`得到最终输出。
+![](images/gradient-boost.png)
+
+**Hands-On Machine Learning with Scikit-Learn and TensorFlow**中手动实现了一个简单的Gradient Boosted Regression Trees (GBRT)例子，通过多次对错分集进行训练得到多个子模型，最后对各个子模型输出`求和`得到最终输出。该例子十分直观。
+
+> Let’s go through a simple regression example using Decision Trees as the base predictors (of course Gradient Boosting also works great with regression tasks). This is called Gradient Tree Boosting, or Gradient Boosted Regression Trees (GBRT). First, let’s fit a DecisionTreeRegressor to the training set (for example, a noisy quadratic training set):
 
 ```python
 from sklearn.tree import DecisionTreeRegressor
@@ -164,7 +171,7 @@ tree_reg1 = DecisionTreeRegressor(max_depth=2)
 tree_reg1.fit(X, y)
 ```
 
-Now train a second DecisionTreeRegressor on the residual errors made by the first predictor:
+> Now train a second DecisionTreeRegressor on the residual errors made by the first predictor:
 
 ```python
 y2 = y - tree_reg1.predict(X)
@@ -172,7 +179,7 @@ tree_reg2 = DecisionTreeRegressor(max_depth=2)
 tree_reg2.fit(X, y2)
 ```
 
-Then we train a third regressor on the residual errors made by the second predictor:
+> Then we train a third regressor on the residual errors made by the second predictor:
 
 ```python
 y3 = y2 - tree_reg2.predict(X)
@@ -180,45 +187,63 @@ tree_reg3 = DecisionTreeRegressor(max_depth=2)
 tree_reg3.fit(X, y3)
 ```
 
-Now we have an ensemble containing three trees. It can make predictions on a new instance simply by adding up the predictions of all the trees:
+> Now we have an ensemble containing three trees. It can make predictions on a new instance simply by adding up the predictions of all the trees:
 
 ```python
 y_pred = sum(tree.predict(X_new) for tree in (tree_reg1, tree_reg2, tree_reg3))
 ```
 
+为防止出现过拟合，训练时可以使用`early-stop`方法，当全局损失连续多次不下降时停止训练。
+
+![](images/gradient-boost.png)
+
+
+#### 算法描述
 
 **Greedy Function Approximation: A gradient Boosting Machine**论文中给出的Gradient Boost基础算法流程如下：
 
 1. 初始化损失函数
 $$
-F_0(x) = arg min_p \sum_{1=1}^N {L(y_i,p)}
+F_0(x) = arg min_{\rho} \sum_{1=1}^N {L(y_i, \rho)}
 $$
 
 
-2. 逐步构建子模型，对于每个模型m（最多M个模型）
+2. 逐步构建子模型，对于每个模型（最多M个模型）$$F_m(x)$$
+
+    $$
+    \hat y_i  = -\Bigl[{\frac{\partial L(y_i,F(x_i))}{\partial F(x_i)}} \Bigr] _{F(x)=F_{m-1}(x)}  ，(i=1,N)
+    $$
 
 
-$$
-\hat y_i  = -\Bigl[{\frac{\partial L(y_i,F(x_i))}{\partial F(x_i)}} \Bigr] _{F(x)=F_{m-1}(x)}  ，(i=1,N)
-$$
+    $$
+    a_m=argmin_{a,\beta} \sum_{i=1}^N[\hat{y_i}-\beta h(x_i;a)]^2)
+    $$
 
+    $$
+    \rho_m = argmin_{\rho}\sum_{i=1}^NL(y_i, F_{m-1}(x_i)+\rho h(x_i;a_m))
+    $$
 
-$$
-a_m=argmin_{a,\beta} \sum_{i=1}^N[\hat{y_i}-\beta h(x_i;a)]^2)
-$$
+    $$
+    F_m(x) = F_{m-1}(x)+\rho_m h(x;a_m)
+    $$
 
-$$
-\rho_m = argmin_{\rho}\sum_{i=1}^NL(y_i, F_{m-1}(x_i)+\rho h(x_i;a_m))
-$$
+论文中的详细算法解读参见另外一篇文章。
 
-$$
-F_m(x) = F_{m-1}(x)+\rho_m h(x;a_m)
-$$
-### FT
+### Stacking（Meta Ensembling）
+Hands-On Machine Learning with Scikit-Learn and TensorFlow一书最后介绍了`stacking`方法。主要思想：对每个子模型的输出再次进行学习，训练出一个混合器（`Blender`）。
 
+>  It is based on a simple idea: instead of using trivial functions (such as hard voting) to aggregate the predictions of all predictors in an ensemble,why don’t we train a model to perform this aggregation? Figure 7-12 shows such an ensemble performing a regression task on a new instance. Each of the bottom three predictors predicts a different value (3.1, 2.7, and 2.9), and then the final predictor (called a blender, or a meta learner) takes these predictions as inputs and makes the final prediction (3.0).
 
-### Stacking
+![](images/stacking-method-trainning-a-blender.png)
 
+具体过程：
+1. 将测试集s分为两部分s1、s2
+2. 使用s1训练第一层中的子模型，子模型各不相同以保证模型多样性（相当于从不同的角度观察数据）。
+3. 将s2数据集输入到第一层中的模型，其输出和目标作为第二层的数据集训练出混合器`Blender`。
+
+> It is actually possible to train several different blenders this way (e.g., one using Linear Regression, another using Random Forest Regression, and so on): we get a whole layer of blenders. The trick is to split the training set into three subsets: the first one is used to train the first layer, the second one is used to create the training set used to train the second layer (using predictions made by the predictors of the first layer),and the third one is used to create the training set to train the third layer (using predictions made by the predictors of the second layer). Once this is done, we can make a prediction for a new instance by going through each layer sequentially
+
+更复杂点，还可以构造一个`Blender层`，该层每个`Blender`使用不同的模型，最后集成到第三层的`Blender`得到最终输出，其中的技巧在于将第二层的训练数据分成三份，每个层一份不同的训练集。
 
 ## 方差和偏差
 
@@ -228,4 +253,8 @@ $$
 ### 参考
 - Hands-On Machine Learning with Scikit-Learn and TensorFlow
 - Greedy Function Approximation: A gradient Boosting Machine
-  
+- https://en.wikipedia.org/wiki/Gradient_boosting
+- 《机器学习》 弗拉赫 (Peter Flach），人民邮电出版社
+- http://www.scholarpedia.org/article/Ensemble_learning
+- http://blog.kaggle.com/2016/12/27/a-kagglers-guide-to-model-stacking-in-practice/
+- https://www.kaggle.com/arthurtok/introduction-to-ensembling-stacking-in-python
