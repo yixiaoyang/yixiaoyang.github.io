@@ -22,7 +22,7 @@ tags:
 
 >  When sampling is performed with replacement, this method is called bagging1 (short for bootstrap aggregating). When sampling is performed without replacement, it is called pasting
 
-![](images/ensemble-learning-bagging-pasting.png)
+![](/images/ensemble-learning-bagging-pasting.png)
 
 sk-learn中的BaggingClassifier使用：
 
@@ -93,7 +93,7 @@ Boosting为了增加训练集的多样性，采取了更复杂的抽样方法。
 > training instances is then increased. A second classifier is trained using the updated weights 
 > and again it makes predictions on the training set, weights are updated, and so on 
 
-![](images/adaboost.png)
+![](/images/adaboost.png)
 
 #### 算法描述
 
@@ -159,7 +159,7 @@ ada_clf.fit(X_train, y_train)
 
 `Gradient Boosting = Gradient Descent + Boosting`，Gradient Boost与传统的Boost的区别是，每一次的计算是为了减少上一次的残差(residual)，而为了消除残差，在残差减少的梯度(Gradient)方向上建立一个新的模型。每个新的模型的生成是为了使之前模型的残差往梯度方向减少，与传统Boost对正确、错误的样本进行加权有着很大的区别。 
 
-![](images/gradient-boost.png)
+![](/images/gradient-boost.png)
 
 **Hands-On Machine Learning with Scikit-Learn and TensorFlow**中手动实现了一个简单的Gradient Boosted Regression Trees (GBRT)例子，通过多次对错分集进行训练得到多个子模型，最后对各个子模型输出`求和`得到最终输出。该例子十分直观。
 
@@ -195,7 +195,7 @@ y_pred = sum(tree.predict(X_new) for tree in (tree_reg1, tree_reg2, tree_reg3))
 
 为防止出现过拟合，训练时可以使用`early-stop`方法，当全局损失连续多次不下降时停止训练。
 
-![](images/gradient-boost.png)
+![](/images/gradient-boost.png)
 
 
 #### 算法描述
@@ -234,7 +234,7 @@ Hands-On Machine Learning with Scikit-Learn and TensorFlow一书最后介绍了`
 
 >  It is based on a simple idea: instead of using trivial functions (such as hard voting) to aggregate the predictions of all predictors in an ensemble,why don’t we train a model to perform this aggregation? Figure 7-12 shows such an ensemble performing a regression task on a new instance. Each of the bottom three predictors predicts a different value (3.1, 2.7, and 2.9), and then the final predictor (called a blender, or a meta learner) takes these predictions as inputs and makes the final prediction (3.0).
 
-![](images/stacking-method-trainning-a-blender.png)
+![](/images/stacking-method-trainning-a-blender.png)
 
 具体过程：
 1. 将测试集s分为两部分s1、s2
