@@ -55,8 +55,24 @@ y_pred = sum(tree.predict(X_new) for tree in (tree_reg1, tree_reg2, tree_reg3))
 
 
 #### steepest-descent
-传统的`最速下降`（steepest-descent）一种最简单的梯度优化器(estimator)。
+传统的`最速下降`（又称梯度下降法，steepest-descent）一种最简单的梯度优化器(estimator)，相当于每次沿着导数的方向走一小步，最终就能走到一个最优值附近。用数学的语言解释最速下降法，是利用目标函数的一阶`泰勒展开`（泰勒展开后面再做复习笔记）近似优化过程，求得搜索方向的方法。
 
+##### 理解和推导
+对$$f(x+v)$$在x处进行泰勒一阶展开，有
+$$
+f(x+v) = f(x) + a \nabla f(x)^Tv + o(a) 
+$$
+其中a为步长，o(a)高阶无穷小可忽略，因此有
+$$
+f(x) - f(x+v) \approx -\nabla f(x)^Tv
+$$
+即对v在下降方向的前提下（$$-\nabla f(x)^Tv < 0$$），$$-\nabla f(x)^Tv$$可以看做为f在x到x+v的下降量。为了使下降量尽可能地大，自然可以想到$$v=-\nabla f(x)^T$$时，下降量最大。严格地说，由`科西不等式`可知
+$$
+|-\nabla f(x)^Tv| \le ||-\nabla f(x)^T|| \  ||v||
+$$
+当且仅当$$v=-\nabla f(x)^T$$时，等号成立。
+
+#### Gradient Boost
 **Greedy Function Approximation: A gradient Boosting Machine**论文中给出的Gradient Boost基础算法流程如下：
 
 1. 初始化损失函数
