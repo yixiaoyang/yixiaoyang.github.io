@@ -5,9 +5,7 @@ date: 2015-07-20 12:37:52+00:00
 layout: post
 title: '[Python] Raspberry Pi检测PM2.5并同步到Yeelink'
 categories:
-- python
-- 树莓派
-
+- 嵌入式
 tags:
 - 嵌入式
 ---

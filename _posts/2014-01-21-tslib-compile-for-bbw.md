@@ -5,12 +5,8 @@ date: 2014-01-21 10:37:25+00:00
 layout: post
 title: '[Beaglebone] tslib for Beaglebone' 
 categories:
-- Beaglebone
-
+- 嵌入式
 tags:
-- Beaglebone
-- C
-- Linux
 - 嵌入式
 ---
 

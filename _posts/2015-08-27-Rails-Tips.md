@@ -6,9 +6,7 @@ layout: post
 title: '[Rails] Ruby & Rails常用技巧集锦' 
 categories:
 - Ruby
-
 tags:
-- Shell
 - Ruby
 ---
 

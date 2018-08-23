@@ -8,7 +8,6 @@ categories:
 - python
 tags:
 - python 
-- 爬虫
 ---
 
 最近用python实现了一个小型爬虫，爬个博客没问题。

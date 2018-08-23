@@ -5,10 +5,9 @@ date: 2015-8-2 19:30:25+00:00
 layout: post
 title: '[CPP] Boost库概要' 
 categories:
-- cpp
+- c++
 tags:
 - c++
-- boost
 ---
 
 

@@ -5,12 +5,8 @@ date: 2014-01-09 17:12:00+00:00
 layout: post
 title: '[Beaglebone] Linux kernel for Beaglebone' 
 categories:
-- Beaglebone
-
+- 嵌入式
 tags:
-- Beaglebone
-- C
-- Linux
 - 嵌入式
 ---
 

@@ -3,12 +3,11 @@ author: leon
 comments: true
 date: 2016-07-27 18:25:00+00:00
 layout: post
-title: 'K均值聚类算法理解'
+title: '[机器学习]K均值聚类算法理解'
 categories:
-- 数据分析
 - 机器学习
 tags:
-- 聚类
+[机器学习]
 ---
 
 ### K-Means算法简介

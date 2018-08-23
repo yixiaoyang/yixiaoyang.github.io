@@ -5,10 +5,9 @@ date: 2016-03-05 18:03:25+00:00
 layout: post
 title: '[Qt] 关于Qt编译error: undefined reference to `vtable for xxx错误' 
 categories:
-- cpp
+- c++
 tags:
 - c++
-- Qt
 ---
 
 ref: [http://stackoverflow.com/questions/13121310/adding-signal-to-custom-qthread](http://stackoverflow.com/questions/13121310/adding-signal-to-custom-qthread)

@@ -3,7 +3,7 @@ author: leon
 comments: true
 date: 2017-10-26 19:10:00+00:00
 layout: post
-title: '[Tensorflow]Kaggle Digit Recognizer代码（Tensorflow + CNN）重新整理'
+title: '[机器学习]Kaggle Digit Recognizer代码（Tensorflow + CNN）重新整理'
 categories:
 - leetcode
 tags:

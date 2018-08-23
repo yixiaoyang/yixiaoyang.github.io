@@ -3,12 +3,10 @@ author: leon
 comments: true
 date: 2017-02-27 10:19:00+00:00
 layout: post
-title: '朴素贝叶斯在机器学习中的使用'
+title: '[机器学习]朴素贝叶斯在机器学习中的使用'
 categories:
 - 机器学习
-- 算法
 tags:
-- 算法
 - 机器学习
 ---
 

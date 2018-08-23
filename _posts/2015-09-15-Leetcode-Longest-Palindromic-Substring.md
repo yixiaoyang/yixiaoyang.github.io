@@ -11,7 +11,6 @@ categories:
 tags:
 - leetcode
 - 算法
-- cpp
 
 ---
 

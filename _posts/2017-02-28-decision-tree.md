@@ -3,7 +3,7 @@ author: leon
 comments: true
 date: 2017-02-28 10:19:00+00:00
 layout: post
-title: '决策树中的信息增益度量'
+title: '[机器学习]决策树中的信息增益度量'
 categories:
 - 机器学习
 tags:

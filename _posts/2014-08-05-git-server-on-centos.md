@@ -6,9 +6,8 @@ layout: post
 title: 'Git Server on Centos via SSH' 
 categories:
 - 工具
-
 tags:
-- C
+- 工具
 ---
 
 ### Git Server on Centos via SSH

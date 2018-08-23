@@ -5,10 +5,10 @@ date: 2016-02-02 11:21:25+00:00
 layout: post
 title: '[Android] Android驱动开发二三事' 
 categories:
-- cpp
+- Android
 tags:
+- Android
 - c++
-- boost
 ---
 
 Android在嵌入式开发中越来越常见。底层出了linux内核基础的东西外，加了很多中间层的东西。大概梳理一下会遇到的一些问题。

@@ -5,12 +5,8 @@ date: 2015-07-20 12:37:52+00:00
 layout: post
 title: '[Beaglebone] BBB eeprom的擦写' 
 categories:
-- Beaglebone
-
+- 嵌入式
 tags:
-- Beaglebone
-- C
-- Linux
 - 嵌入式
 ---
 

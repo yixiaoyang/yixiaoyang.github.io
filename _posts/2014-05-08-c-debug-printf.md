@@ -6,9 +6,8 @@ layout: post
 title: '[C] Debug Printf和大小端测试范例' 
 categories:
 - c
-
 tags:
-- C
+- c
 ---
 
 

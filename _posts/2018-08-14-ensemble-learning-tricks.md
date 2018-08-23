@@ -83,6 +83,31 @@ Boosting为了增加训练集的多样性，采取了更复杂的抽样方法。
 
 >  The general idea of most boosting methods is to train predictors sequentially, each trying to correct its prede‐cessor. 
 
+### 概述
+
+boosting的目标是解决下面的优化问题：
+
+$$
+min_{f(x)} \sum_{i=1}^{N} L(y_i,f(x_i))
+$$
+
+常见的损失函数如下表：
+
+![](../images/boost-comparation.jpg)
+
+这几个boost算法几乎上是从不同损失函数的角度来逼近最优解。
+
+### L2Boosting
+
+使用最简单的平方差损失函数，在第 m 步可以得到：
+$$
+L(y_i, f_{m-1}(x_i) + \beta h(x_i; \alpha)) = (\hat{y_i}-h(x_i;a))^2
+$$
+其中
+$$
+\hat{y_i} = y_i-f_{m-1}(x_i)
+$$
+即当前模型的残差。当设置$$\beta = 1$$时，得到的就是L2Boosting优化算式。
 
 ### Adaptive Boost
 
@@ -144,6 +169,12 @@ $$
 \hat{y} =  (\sum_{j=1}^{m} (a_j \times M_j) > 0) = (\sum_{j=1}^{m} (a_j \times predict(C_j,X)) > 0)
 $$
 
+
+`AdaBoost`的损失函数形式：
+$$
+L(f) = \frac{1}{m} \sum_{1}^{m} e^{-y_i f(x_i)} = \frac{1}{m} \sum_{1}^{m} e^{-y_i \sum_{j=1}^{N} a_jh_j(x_i)}
+$$
+
 sklearn中`AdaBoostClassifier`分类器实现了该算法。
 
 ```python
@@ -159,7 +190,7 @@ ada_clf.fit(X_train, y_train)
 
 `Gradient Boosting = Gradient Descent + Boosting`，Gradient Boost与传统的Boost的区别是，每一次的计算是为了减少上一次的残差(residual)，而为了消除残差，在残差减少的梯度(Gradient)方向上建立一个新的模型。每个新的模型的生成是为了使之前模型的残差往梯度方向减少，与传统Boost对正确、错误的样本进行加权有着很大的区别。 
 
-**Hands-On Machine Learning with Scikit-Learn and TensorFlow**中手动实现了一个简单的Gradient Boosted Regression Trees (GBRT)例子，通过多次对错分集进行训练得到多个子模型，最后对各个子模型输出`求和`得到最终输出。该例子十分直观。
+**Hands-On Machine Learning with Scikit-Learn and TensorFlow**中手动实现了一个简单的Gradient Boosted Regression Trees (GBRT)例子，通过多次对错分集进行训练得到多个子模型，最后对各个子模型输出`求和`得到最终输出。该例子十分直观。这里定义的`残差`就是`L2Boosting`的`Derivative`。
 
 > Let’s go through a simple regression example using Decision Trees as the base predictors (of course Gradient Boosting also works great with regression tasks). This is called Gradient Tree Boosting, or Gradient Boosted Regression Trees (GBRT). First, let’s fit a DecisionTreeRegressor to the training set (for example, a noisy quadratic training set):
 

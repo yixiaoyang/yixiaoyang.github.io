@@ -3,12 +3,11 @@ author: leon
 comments: true
 date: 2016-07-22 17:00:00+00:00
 layout: post
-title: '普通最小二乘法的原理理解'
+title: '[机器学习]普通最小二乘法的原理理解'
 categories:
-- 数据分析
 - 机器学习
 tags:
-- 线性代数
+- 机器学习
 ---
 
 ## 普通最小二乘法的原理理解

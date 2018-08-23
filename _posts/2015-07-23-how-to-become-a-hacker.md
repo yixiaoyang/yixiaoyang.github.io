@@ -6,8 +6,6 @@ layout: post
 title: '[搬运] 如何成为一名黑客' 
 categories:
 - 计算机文化
-- 搬运
-
 tags:
 - 计算机文化
 ---

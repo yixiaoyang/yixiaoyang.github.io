@@ -6,10 +6,8 @@ layout: post
 title: 'Gentoo emerge使用' 
 categories:
 - gentoo
-
 tags:
-- C
-- 系统管理
+- gentoo
 
 ---
 

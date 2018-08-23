@@ -5,7 +5,9 @@ date: 2014-05-07 11:37:00+00:00
 layout: post
 title: '[Beaglebone] U-boot and Buildroot for Beaglebone' 
 categories:
-- Beaglebone
+- 嵌入式
+tages:
+- 嵌入式
 ---
 
 ### U-Boot for BeagleBone
