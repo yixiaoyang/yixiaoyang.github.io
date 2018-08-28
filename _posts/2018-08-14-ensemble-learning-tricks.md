@@ -93,7 +93,7 @@ $$
 
 常见的损失函数如下表：
 
-![](../images/boost-comparation.jpg)
+![](/images/boost-comparation.jpg)
 
 这几个boost算法几乎上是从不同损失函数的角度来逼近最优解。
 

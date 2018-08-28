@@ -1222,12 +1222,9 @@ pre, code {
   font-size: 14px; }
 
 code {
-  color: #c63710;
+  color: #e96900;
   border-radius: 2px;
-  white-space: nowrap;
-  padding-left: 4px;
-  padding-right: 4px;
-}
+  white-space: nowrap; }
 
 pre {
   overflow: auto;

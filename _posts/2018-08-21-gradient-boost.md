@@ -90,8 +90,6 @@ $$
 
 `Gradient Boost`分类算法思想和回归版本没有区别，主要是任务输出不一样。回归输出连续的值，而分类输出离散值，即需要获得一个概率分布去逼近真正的分布，导致无法直接输出类别去拟合输出的误差。解决这个问题主要方法有两种：1）使用指数损失函数，这种情况退化成`Adaptive Boost`方法（下节讨论这两种方法的联系）。2）使用对数损失函数，如cross-entropy。
 
-
-
 ### Adaptive boost 和 Gradient Boost
 
 在分类问题上，当`Gradient Boost`使用指数损失函数时，等同于`Adaptive Boost`，因此可以认为`Adaptive Boost`是`Gradient Boost`的一种特例（AdaBoost提升错分数据点的权重，Gradient Boosting计算梯度，两种优化思想有区别）。`Adaptive Boost`方法中常见的损失函数形式：
