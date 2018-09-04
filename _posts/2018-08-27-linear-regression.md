@@ -110,7 +110,7 @@ $$
 
 2. 特征：输入部分的相关特征选取可以优化计算速度，特征工程方面的内容后面再作学习（先挖坑）。另外在预处理输入是对特征归一化处理可以加快梯度优化速度。
 
-3. 损失函数：一般使用MSE(L2损失)。因为他是凸函数，可以保证计算的是全局损失而不用担心可能算出一个局部损失。想对于MAE（L1损失），MSE的鲁棒性更差（对异常点敏感）。
+3. 损失函数：一般使用MSE(L2损失)。因为他是凸函数，可以保证计算的是全局损失而不用担心可能算出一个局部损失(梯度下降不一定能够找到全局的最优解，有可能是一个局部最优解。如果损失函数是凸函数，梯度下降法得到的解就一定是全局最优解，凸优化的坑以后慢慢填)。相对于MAE（L1损失），MSE的鲁棒性更差（对异常点敏感）。
 
 ### 批量梯度下降 (Batch Gradient Descent)
 
@@ -146,16 +146,38 @@ $$
 ### 随机梯度下降 (Stochastic Gradient Descent)
 
 批量梯度下降法对`步长`的取值比较敏感，过大则精度不够，过小则收敛太慢，此外由于批量梯度下降法需要对整个训练集计算梯度，当数据较大时计算过程较慢。随机梯度下降方法则是将随机抽样概念引入基本梯度下降算法，采取动态步长和训练部分随机样本的一种策略，目的是优化精度且兼顾收敛速度。
+ 
+![SGD代价](/images/SGD-cost.png)
 
 > **Hands-On Machine Learning with Scikit-Learn and TensorFlow** (Page 117, Stochastic Gradient Descent)
 > 
 > Stochastic Gradient Descent  just picks a random instance in the training set at every step and computes the gradients based only on that single instance. Obviously this makes the algorithm much faster since it has very little data to manipulate at every iteration. It also makes it possible to train on huge training sets, since only one instance needs to be in memory at each iteration (SGD can be implemented as an out-of-core algorithm.
 > 
 > On the other hand, due to its stochastic (i.e., random) nature, this algorithm is much less regular than Batch Gradient Descent: instead of gently decreasing until it reaches the minimum, the cost function will bounce up and down, decreasing only on average. Over time it will end up very close to the minimum, **but once it gets there it will continue to bounce around, never settling down (see Figure 4-9). So once the algorithm stops, the final parameter values are good, but not optimal.**
- 
+
+因为抽样的随机性SGD不能保证稳定地找到最优点，只能说是相对最优点，常见的解决办法是使用模拟退火算法（simulated annealing），开始设置一个较大的学习率，然后根据收敛程度逐步减小学习率，具体的学习率由学习率调度算法（learning schedule）决定。另一方面这种随机性可以使得SGD跳出局部最优点（Local Minima），因此在找全局最优点上SGD是比BGD更好的方法。
 
 
 ### 小批量梯度下降
+
+不同于批量梯度下降法（每次使用整个训练集）和随机梯度下降法（每次使用一个抽样样本集），小批量梯度下降使用多个小批量随机样本（mini-batch）进行梯度迭代计算。Mini-bach GD在计算上对硬件更为友好（特别是GPU上）。简单来说Mini-batch GD速度比BSD快，比SGD慢；精度比BSD低，比SGD高。
+
+$$
+w_i = w_i - \eta \sum\limits_{j=t}^{t+x-1}(h_w(x_0^{(j)}, x_1^{(j)}, ...x_n^{(j)}) - y_j)x_i^{(j)}
+$$
+
+算法流程：
+1. 选择n个训练样本（n<总训练集样本数）
+2. 计算每个样本上的梯度
+3. 对n个样本的梯度加权平均求和，作为这一次mini-batch下降梯度
+4. 重复训练步骤，直到收敛
+
+### 梯度法调优
+
+1. 算法步长
+2. 初始化
+3. 归一化
+4. 特征选取
 
 ## 多项式回归
 
@@ -193,3 +215,4 @@ $$
  
 ## TODO
 - 特征工程
+- 凸优化
