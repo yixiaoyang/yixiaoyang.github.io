@@ -179,7 +179,68 @@ $$
 3. 归一化
 4. 特征选取
 
-## 多项式回归
+## 多项式回归（Polynomial Regression）
+
+当数据更加复杂时一元的直线模型可能不那么好用了，很容易联想到可以将数据在多元方程上拟合。多项式拟合的做法是，将感兴趣的 feature 幂运算作为新的 feature 加入训到练集。
+
+
+```python
+import numpy as np
+from sklearn.preprocessing import PolynomialFeatures
+from sklearn.linear_model import LinearRegression
+%matplotlib inline
+import matplotlib.pyplot as plt
+
+m = 200
+x = 6*np.random.rand(m,1)-3
+y = 0.5*x**2 + x + 2 + np.random.rand(m,1)
+print("%d,%d"%(len(x),len(y)))
+
+plt.scatter(x,y)
+
+poly_features = PolynomialFeatures(degree=2, include_bias=False)
+x_poly = poly_features.fit_transform(x)
+x_poly[0]
+# array([-0.89981979,  0.80967565])
+
+lin_reg = LinearRegression()
+lin_reg.fit(x_poly, y)
+lin_reg.intercept_, lin_reg.coef_
+# (array([2.50385144]), array([[0.99925638, 0.49855815]]))
+```
+
+### 多项式回归和学习曲线（Learning Curves）
+多项式回归中`PolynomialFeatures`的超参数`degree`对模型影响较大，选择的维度过小会出现欠拟合（高偏差），维度过大则不可避免的过拟合（高方差），衡量一个模型的拟合过于简单还是过于复杂一般使用`交叉验证`方法，另外一个方法就是看`学习曲线（Learning Curves）`图。
+
+学习曲线的绘制方法是在`多个不同大小`的训练集`子集`上训练模型，将其损失绘制出来即可。
+
+学习曲线主要有2个作用：
+1. 添加更多的训练数据给我们带来多大的收益
+2. 模型是否处在过拟合/欠拟合的状态
+
+```python
+from sklearn.metrics import mean_squared_error
+from sklearn.model_selection import train_test_split
+def plot_learning_curves(model, x, y):
+    x_train, x_val, y_train, y_val = train_test_split(x, y, test_size=0.2)
+    train_errors, val_errors = [], []
+    for m in range(1, len(x_train)):
+        model.fit(x_train[:m], y_train[:m])
+        y_train_predict = model.predict(x_train[:m])
+        y_val_predict = model.predict(x_val)
+        train_errors.append(mean_squared_error(y_train_predict, y_train[:m]))
+        val_errors.append(mean_squared_error(y_val_predict, y_val))
+    plt.plot(np.sqrt(train_errors), "r-+", linewidth=2, label="train")
+    plt.plot(np.sqrt(val_errors), "b-", linewidth=3, label="val")
+```
+
+高方差增加训练数据会有所帮助
+
+![](/images/learning-curves-high-variance.png)
+
+高偏差增加训练数据没有太大作用
+
+![](/images/learning-curves-high-bias.png)
 
 ## 正则化的线性模型
 
