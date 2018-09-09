@@ -244,10 +244,38 @@ def plot_learning_curves(model, x, y):
 
 ## 正则化的线性模型
 
+过拟合通常发生在变量的特征过多的情况下，此时训练出的方程可以很好的拟合训练数据，但是由于过度地拟合使其无法泛化到新的数据样本中。模型发生过拟合时，一般有2个办法：
+
+1. 减少特征数量
+   - 人工选择特征
+   - 模型特征选择算法（主成分分析等算法）
+
+2. 正则化（Regularization）
+    - 保留所有的特征，但是对参数向量引入额外约束。(过拟合的时候，拟合函数的系数往往非常大，而正则化是通过约束参数的范数使其不要太大，所以可以在一定程度上减少过拟合情况）。
+
+
 ### Ridge Regression（岭回归）
+
+岭回归使用的是L2正则化代价函数：
+
+$$
+\tag5 L(w) = \frac{1}{2m} \Bigl[ \sum_{i=1}^{m}(w^T \cdot X^{(i)} - y^{(i)})^2 + \lambda \sum_{j=1}^{n} w_j^2 \Bigr]
+$$
+
+
+1. 此处的$$w_0$$并未参与正则化过程。
+2. 因为输入向量参与代价函数计算，1
+
+> It is important to scale the data (e.g., using a StandardScaler) before performing Ridge Regression, as it is sensitive to the scale of the input features. This is true of most regularized models.
 
 
 ### Lasso回归
+
+Lasso（least absolute shrinkage and selection operator）使用的L1正则化代价函数：
+
+$$
+\tag5 L(w) = \frac{1}{2m} \Bigl[ \sum_{i=1}^{m}(w^T \cdot X^{(i)} - y^{(i)})^2 + \lambda \sum_{j=1}^{n} |w_j| \Bigr]
+$$
 
 ### Elastic Net（弹性网络）
 
