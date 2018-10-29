@@ -263,8 +263,8 @@ $$
 $$
 
 
-1. 此处的$$w_0$$并未参与正则化过程。
-2. 因为输入向量参与代价函数计算，1
+1. 此处的 $$w_0$$ 并未参与正则化过程。
+2. 因为输入向量参与代价函数计算
 
 > It is important to scale the data (e.g., using a StandardScaler) before performing Ridge Regression, as it is sensitive to the scale of the input features. This is true of most regularized models.
 
@@ -277,13 +277,37 @@ $$
 \tag5 L(w) = \frac{1}{2m} \Bigl[ \sum_{i=1}^{m}(w^T \cdot X^{(i)} - y^{(i)})^2 + \lambda \sum_{j=1}^{n} |w_j| \Bigr]
 $$
 
+An important characteristic of Lasso Regression is that it tends to completely eliminate the weights of the least important features (i.e., set them to zero). For example, the dashed line in the right plot on Figure 4-18 (with α = 10 -7 ) looks quadratic, almost linear: all the weights for the high-degree polynomial features are equal to zero. In other words, Lasso Regression automatically performs feature selection and outputs a sparse model (i.e., with few nonzero feature weights)
+
+Lasso回归的一个重要特点是趋于消除最不重要的特性的参数。
+
 ### Elastic Net（弹性网络）
+
+弹性网络时Ridge和Lasso回归的折衷，既观察参数的L1正则化代价也观察L2正则化代价。
+
+$$
+\tag6 L(w) = MSE(w) + r \alpha \sum_{i=1}^{n}|w| + \frac {(1-r)} {2} \alpha \sum_{i=1}^{n}|w|^2 
+$$
+
+### 三种正则化模型选择经验谈
+
+1. 一般情况下，用正则化模型比单纯的线性模型效果要好，因此一般尽量避免单纯的线性模型。
+2. 如果怀疑只有小部分feature有用，可以尝试使用Lasso正则化模型（趋于减小无用feature的权重）。
+3. 当feature数量比训练集数量还多或者有feature关联较大时，Lasso模型可能会判断失误，此时使用折衷的弹性网络效果会更好。
 
 ## Logistic Regression（逻辑回归）
 
-### 逻辑回归的本质
 
-### Softmax
+### 逻辑回归的本质
+逻辑回归模型和线性模型几乎相同，仅仅是输出不同，相对于线性模式直接输出预测结果，逻辑回归输出预测结果的概率分布。
+
+Logistic Function:
+
+$$
+\theta_{(t)} = \frac {1} {1 + exp^{-t}}
+$$
+
+### Softmax Regression  
 
 
 梯度下降特点:
