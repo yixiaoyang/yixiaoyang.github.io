@@ -32,8 +32,7 @@ $$
 \tag{3}  L(w) = MSE(X,h_{w}(X)) = \frac{1}{m} \sum_{i=1}^{m}(w^T \cdot X^{(i)} - y^{(i)})^2
 $$
 
-则`Linear Regression`模型的优化目标是找到使损失最小的参数 $$ \hat{w} $$。为解决线性回归问题，经典的机器学习算法（优化器）主要是`正则方程（最小二乘法）`和`梯度法`，其中`最小二乘法`在统计、微积分、线性代数、概率论等系统都有解释方法，`梯度法`则从基本的梯度下降法衍生出更实用的`批量梯度下降`、`随机梯度下降`和`小批量梯度下降`等经典算法。线性回归模型常见的是`多项式回归`，而对于实际问题中的非线性输出，传统线性模型无法做到因此引出`逻辑回归`，使用sigmoid等映射函数将输出映射到非线性空间去，除去映射函数其他步骤同传统线性模型并无区别。`逻辑回归`中最常见的经典模型必须是`Softmax回归`。基本上这些经典模型和算法吃透，线性回归模型
-
+则`Linear Regression`模型的优化目标是找到使损失最小的参数 $$ \hat{w} $$。为解决线性回归问题，经典的机器学习算法（优化器）主要是`正则方程（最小二乘法）`和`梯度法`，其中`最小二乘法`在统计、微积分、线性代数、概率论等系统都有解释方法，`梯度法`则从基本的梯度下降法衍生出更实用的`批量梯度下降`、`随机梯度下降`和`小批量梯度下降`等经典算法。线性回归模型常见的是`多项式回归`，而对于实际问题中的非线性输出，传统线性模型无法做到因此引出`逻辑回归`，使用sigmoid等映射函数将输出映射到非线性空间去，除去映射函数其他步骤同传统线性模型并无区别。`逻辑回归`在多分类问题上的推广可使用`Softmax回归`，计算样本在多个类上的分数后，将得到最大概率的类别作为输出。
 
 ## Normal Equation
 
@@ -179,6 +178,18 @@ $$
 3. 归一化
 4. 特征选取
 
+
+梯度下降特点:
+
+    选择合适的学习速率α
+    通过不断的迭代，找到θ0 ... θn, 使得J(θ)值最小
+
+正规方程特点:
+
+    不需要选择学习速率α，不需要n轮迭代
+    只需要一个公式计算即可
+    
+
 ## 多项式回归（Polynomial Regression）
 
 当数据更加复杂时一元的直线模型可能不那么好用了，很容易联想到可以将数据在多元方程上拟合。多项式拟合的做法是，将感兴趣的 feature 幂运算作为新的 feature 加入训到练集。
@@ -301,25 +312,54 @@ $$
 ### 逻辑回归的本质
 逻辑回归模型和线性模型几乎相同，仅仅是输出不同，相对于线性模式直接输出预测结果，逻辑回归输出预测结果的概率分布。
 
-Logistic Function:
+#### Sigmod Function
 
 $$
-\theta_{(t)} = \frac {1} {1 + exp^{-t}}
+\sigma{(t)} = \frac {1} {1 + exp^{-t}}
 $$
+
+对于输入x，参数 $\theta$,计算其概率估计
+$$
+\hat p = h_{\theta}(x) = \sigma(\theta^T \cdot x) \\
+$$
+
+对于二元分类任务，直接以0.5概率为分界线划分类别，对于多元分类可以使用Sofmax回归实现。
+$$
+\hat y = \begin{cases} 1 &{if \ \hat p >= 0.5}\\ 0 &{if \ \hat p < 0.5} \end{cases}
+$$
+
+其对应的cost函数简单的是所有分类的cost均值，也称之为 `log loss`:
+$$
+C(\theta) = \frac{1}{m}  \sum_{i=1}^{m}{y^{(i)} log(\hat p^{(i)})  + (1-y^{(i)})log(1-\hat p^{(i)})} 
+$$
+
+代价函数没有计算最小化参数的正则化方程式，但此函数是凸函数，因此可以使用梯度下降或其他常见优化方法进行逼近。
 
 ### Softmax Regression  
 
+Softmax回归也叫多项（multinomial）或多类（multi-class）的logistic回归，是logistic回归在多类分类问题上的推广。
 
-梯度下降特点:
+对于k类的f分数计算：
+$$
+s_{k}(x) = \theta_{k}^T \cdot x 
+$$
 
-    选择合适的学习速率α
-    通过不断的迭代，找到θ0 ... θn, 使得J(θ)值最小
+计算出所有类（最多K个类别）上的分数后，可得出分类为k类的概率：
+$$
+\hat{p}_k = \theta(s(x))_k = \frac{exp(s_k{(x)})}{\sum_{j=1}^{K} exp(s_j(x))}
+$$
+- K is the number of classes. 
+- $s(x)$ is a vector containing the scores of each class for the instance x. 
+- $\theta(s(x))_k$ is the estimated probability that the instance x belongs to class k given the scores of each class for that instance
 
-正规方程特点:
+预测函数将概率最大的那个分类作为输出即可。计算参数的损失函数常用交叉熵（Cross Entropy）：
+$$
+C(\theta) = - \frac{1}{m} \sum_{m=1}^m \sum_{k=1}^{K} y_k^{(i)} log \Big( \hat p_k^{(i)}\Big)
+$$
 
-    不需要选择学习速率α，不需要n轮迭代
-    只需要一个公式计算即可
-    
+$y_k^{(i)}$ is equal to 1 if the target class for the $i^{th}$  instance is k; otherwise, it is equal to
+0.
+
 ## 参考
 - http://mlwiki.org/index.php/Normal_Equation
 - http://wiki.fast.ai/index.php/Gradient_Descent
