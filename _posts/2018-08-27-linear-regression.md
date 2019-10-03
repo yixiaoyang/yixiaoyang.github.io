@@ -349,15 +349,15 @@ $$
 \hat{p}_k = \theta(s(x))_k = \frac{exp(s_k{(x)})}{\sum_{j=1}^{K} exp(s_j(x))}
 $$
 - K is the number of classes. 
-- $s(x)$ is a vector containing the scores of each class for the instance x. 
-- $\theta(s(x))_k$ is the estimated probability that the instance x belongs to class k given the scores of each class for that instance
+- $$s(x)$$ is a vector containing the scores of each class for the instance x. 
+- $$\theta(s(x))_k$$ is the estimated probability that the instance x belongs to class k given the scores of each class for that instance
 
 预测函数将概率最大的那个分类作为输出即可。计算参数的损失函数常用交叉熵（Cross Entropy）：
 $$
 C(\theta) = - \frac{1}{m} \sum_{m=1}^m \sum_{k=1}^{K} y_k^{(i)} log \Big( \hat p_k^{(i)}\Big)
 $$
 
-$y_k^{(i)}$ is equal to 1 if the target class for the $i^{th}$  instance is k; otherwise, it is equal to
+$$y_k^{(i)}$$ is equal to 1 if the target class for the $i^{th}$  instance is k; otherwise, it is equal to
 0.
 
 ## 参考
