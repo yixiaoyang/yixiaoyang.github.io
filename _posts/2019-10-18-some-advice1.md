@@ -1,7 +1,7 @@
 ---
 author: leon
 comments: true
-date: 2018-11-18 16:52+00:00
+date: 2019-10-18 16:52+00:00
 layout: post
 title: '[日常]继续职业教育的一些建议'
 categories:
