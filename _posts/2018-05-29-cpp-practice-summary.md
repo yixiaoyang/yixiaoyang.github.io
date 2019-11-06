@@ -101,6 +101,26 @@ void operator delete[](void* ptr, void*) noexcept;
 
 ## 智能指针
 
+C++11中引入了智能指针的概念，方便管理堆内存。使用普通指针，容易造成堆内存泄露（忘记释放），二次释放，程序发生异常时内存泄露等问题等，使用智能指针能更好的管理堆内存。（简单说就是又一个，RAII的轮子）
+
+理解智能指针需要从下面三个层次：
+1. 从较浅的层面看，智能指针是利用了RAII（资源获取即初始化）的技术对普通的指针进行封装，这使得智能指针实质是一个对象，行为表现的却像一个指针。  
+2. 智能指针的作用是防止忘记调用delete释放内存和程序异常的进入catch块忘记释放内存。另外指针的释放时机也是非常有考究的，多次释放同一个指针会造成程序崩溃，这些都可以通过智能指针来解决。  
+3. 智能指针还有一个作用是把值语义转换成引用语义。C++和Java有一处最大的区别在于语义不同，在Java里面下列代码：  
+```c++
+　　Animal a = new Animal();
+　　Animal b = a;
+```
+
+你当然知道，这里其实只生成了一个对象，a和b仅仅是把持对象的引用而已。但在C++中不是这样，
+
+```
+     Animal a;
+     Animal b = a;
+```
+
+这里却是就是生成了两个对象。
+
 > Three new smart-pointer types are introduced in C++11: `unique_ptr`, `shared_ptr`, and `weak_ptr`.
 The already existing smart pointer from C ++03 named auto_ptr is generally considered as a
 failed attempt on the way to unique_ptr since the language was not ready at the time. It
@@ -124,21 +144,62 @@ dp3 = move ( dp2 ) ;
 ```
 
 ### shared_ptr
-```c++
-shared_ptr < double > f ()
-{
-  shared_ptr < double > p1 { new double };
-  shared_ptr < double > p2 { new double }, p3 = p2 ;
-  cout  << " p3 . use_count () = " << p3 . use_count () << endl ;
-  return p3 ;
-}
 
-int main ()
+shared_ptr的目标就是，在其所指向的对象不再被使用之后（而非之前），自动释放与对象相关的资源。
+
+```c++
+#include <iostream>
+#include <string>
+#include <vector>
+#include <memory>
+using namespace std;
+
+int main(void)
 {
-  shared_ptr < double > p= f ();
-  cout << "p. use_count () = " << p. use_count () << endl ;
+    // two shared pointers representing two persons by their name
+    shared_ptr<string> pNico(new string("nico"));
+    shared_ptr<string> pJutta(new string("jutta"),
+            // deleter (a lambda function) 
+            [](string *p)
+            { 
+                cout << "delete " << *p << endl;
+                delete p;
+            }
+        );
+
+    // capitalize person names
+    (*pNico)[0] = 'N';
+    pJutta->replace(0, 1, "J");
+
+    // put them multiple times in a container
+    vector<shared_ptr<string>> whoMadeCoffee;
+    whoMadeCoffee.push_back(pJutta);
+    whoMadeCoffee.push_back(pJutta);
+    whoMadeCoffee.push_back(pNico);
+    whoMadeCoffee.push_back(pJutta);
+    whoMadeCoffee.push_back(pNico);
+
+    // print all elements
+    for (auto ptr : whoMadeCoffee)
+        cout << *ptr << " ";
+    cout << endl;
+
+    // overwrite a name again
+    *pNico = "Nicolai";
+
+    // print all elements
+    for (auto ptr : whoMadeCoffee)
+        cout << *ptr << " ";
+    cout << endl;
+
+    // print some internal data
+    cout << "use_count: " << whoMadeCoffee[0].use_count() << endl;
+
+    return 0;
 }
 ```
+
+![](/images/cpp-shared-ptr-demo.png)
 
 If possible, a `shared_ptr` should be created with `make_shared`:
 ```
@@ -148,9 +209,29 @@ Then the management and business data are stored together in memory —and the m
 
 ### waek_ptr
 
-避免weak_ptr的出现，人为排除shared pointer的循环引用。
+避免weak_ptr的出现，人为排除shared pointer的循环引用。个人理解弱指针不一定可用，当内存被销毁时，会指向空指针，使用前需要检查可用性。
 
-（为了给循环引用的shared_ptr擦屁股用，懒得细究）
+```
+#include <iostream>
+#include <memory>
+
+int main() {
+    {
+        std::shared_ptr<int> sh_ptr = std::make_shared<int>(10);
+        std::cout << sh_ptr.use_count() << std::endl;
+
+        std::weak_ptr<int> wp(sh_ptr);
+        std::cout << wp.use_count() << std::endl;
+
+        if(!wp.expired()){
+            std::shared_ptr<int> sh_ptr2 = wp.lock(); //get another shared_ptr
+            *sh_ptr = 100;
+            std::cout << wp.use_count() << std::endl;
+        }
+    }
+    //delete memory
+}
+```
 
 # 函数
 
