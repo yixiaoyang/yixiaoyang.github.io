@@ -370,7 +370,7 @@ plt.show()
 ```
 
 
-![png](https://raw.githubusercontent.com/yixiaoyang/yixiaoyang.github.io/master/_posts/Accident/output_12_0.png)
+![png](/images/output_12_0.png)
 
 
 
@@ -412,7 +412,7 @@ plt.show()
 ```
 
 
-![png](https://raw.githubusercontent.com/yixiaoyang/yixiaoyang.github.io/master/_posts/Accident/output_15_0.png)
+![png](/images/output_15_0.png)
 
 
 
@@ -427,7 +427,7 @@ scatter_matrix(acc_all[scatter_attributes], alpha=0.2, figsize=(16, 16), diagona
 ...
 
 
-![png](https://raw.githubusercontent.com/yixiaoyang/yixiaoyang.github.io/master/_posts/Accident/output_16_1.png)
+![png](/images/output_16_1.png)
 
 
 暂时只能看出wind和wind direction有较强关联性，各个属性同accident_num没有明显强关联性。计算一下各个属性的相关性系数看看
