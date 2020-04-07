@@ -402,8 +402,12 @@ int main (int, char**){
 > to virtual functions which is significant for tiny functions and negligible for sufficiently large
 > functions.
 
-
 按照the C++PL的说法，虚函数调用比普通成员函数慢至多25%
+
+![](/images/virtual-function1.png)
+
+![](/images/virtual-function2.png)
+
 
 ## bind/function
 
