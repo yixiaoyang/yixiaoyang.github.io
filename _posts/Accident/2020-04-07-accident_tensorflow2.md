@@ -292,14 +292,6 @@ print(random_cv.best_score_)     # 返回最佳评分 sklearn中回归问题默�
 print(random_cv.best_estimator_) # 返回最佳模型
 ```
 
-
-      File "<ipython-input-77-74c502663897>", line 4
-        return
-               ^
-    SyntaxError: 'return' outside function
-    
-
-
 ## 参数搜索
 
 对模型影响最大的参数应该是时间长度n_times参数，决定了选取多少个小时作为输入序列数据。
