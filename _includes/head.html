@@ -20,7 +20,7 @@
   <link rel="shortcut icon" href="{{ site.url }}/favicon.png">
   
   <!-- MathJax Section -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
+  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.0/MathJax.js?config=TeX-AMS-MML_HTMLorMML" type="text/javascript">
   </script>
   <script>
 	  MathJax.Hub.Config({
@@ -35,5 +35,23 @@
    	     all[i].SourceElement().parentNode.className += ' has-jax';
    	  }
    	  });
+  </script> -->
+
+  <!-- Load KaTeX -->
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.1.1/katex.min.css">
+  <script src="//cdnjs.cloudflare.com/ajax/libs/KaTeX/0.1.1/katex.min.js"></script>
+  <!-- Parse the Latex divs with Katex-->
+  <script type="text/javascript">
+    $("script[type='math/tex']").replaceWith(
+      function () {
+        var tex = $(this).text();
+        return katex.renderToString(tex, { displayMode: false });
+      });
+
+    $("script[type='math/tex; mode=display']").replaceWith(
+      function () {
+        var tex = $(this).text();
+        return katex.renderToString(tex.replace(/%.*/g, ''), { displayMode: true });
+      });
   </script>
 </head>

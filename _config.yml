@@ -28,6 +28,7 @@ permalink:         /articles/:year-:month/:title
 #  enable_coderay: false
 
 kramdown:
+  math_engine:    mathjax
   auto_ids:       false
   footnote_nr:    1
   entity_output:  as_char
