@@ -97,7 +97,7 @@ void vector<T>::reserve(int newalloc) {
 归纳一下，代价函数和总代价为：  
 $$
 C_i = \begin{cases}
-    1+2k &(if\ {i−1=2k} \text \ for\ some\ {k})\\
+    1+2k &(if\ {(i−1)=2k} & for\; some\ {k})\\
     1 &(otherwise)
 \end {cases}
 $$
