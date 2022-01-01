@@ -94,11 +94,12 @@ void vector<T>::reserve(int newalloc) {
 |push_back(8)|8| 1
 |push_back(9)|16| 8 + 1
 
-归纳一下，代价函数和总代价为：  
+归纳一下，代价函数和总代价为： 
+
 $$
 C_i = \begin{cases}
-    1+2k &(if\ {(i−1)=2k})\\
-    1 &(otherwise)
+    1+2k &(if\ {(i−1)=2k}) \\ 
+    1 &(otherwise) \\
 \end {cases}
 $$
 
