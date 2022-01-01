@@ -14,7 +14,7 @@ url: ''
 # Jekyll configuration
 ####################################
 #
-timezone:          Europe/Paris
+timezone:          Asia/Shanghai
 markdown:          kramdown
 highlighter:       rouge
 excerpt_separator: <!--more-->
