@@ -10,7 +10,8 @@ tags:
 - C++
 ---
 
-C++11新增了多线程，实现线程池就比较简单了，要点是bind、函数对象和`condition_variable`。
+# 线程池的简单实现
+C++11新增了多线程，实现线程池就比较简单了，要点是bind、函数对象和`condition_variable`。设计上是一个简单的生产消费者模型，通过一个队列维护任务，消费者（线程）获取并执行任务。
 
 ```cpp
 #ifndef THREADPOOL_H
@@ -131,6 +132,7 @@ task_t ThreadPool::Take()
     return task;
 }
 ```
+简单测试一下。
 
 ```cpp
 #include <iostream>
@@ -180,3 +182,8 @@ int main(int , char **)
 }
 
 ```
+
+# 改进：增加泛型任务函数支持
+
+上面的线程池基本实现智能使用`void()`类型的任务，现实中的任务函数可能多种多样，因此需要实现泛化。
+
