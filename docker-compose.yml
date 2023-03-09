@@ -1,0 +1,14 @@
+version: '2'
+services:
+  jekyll:
+    image: jekyll-leon:latest
+    container_name: jekyll
+    command: [nginx, '-g', 'daemon off;']
+    #command: tail -f /dev/null
+    #tty: true 
+    #command: jekyll serve  --host 0.0.0.0 --watch --force_polling
+    #command: jekyll serve --watch --force_polling --verbose -H 0.0.0.0
+    ports:
+      - 4000:4000
+    #volumes:
+    #  - .:/srv/jekyll
