@@ -9,16 +9,10 @@ COPY . /svr/jekyll/
 COPY nginx.conf /etc/nginx/
 RUN chown jekyll:jekyll /svr/jekyll -R
 
+COPY entrypoints.sh /
+RUN chmod +x /entrypoints.sh
 
 WORKDIR /svr/jekyll
-RUN cd /svr/jekyll
-RUN ls -l
-RUN bundle add webrick
-
-#RUN adduser -D -g 'www' www
-#RUN mkdir /www
-#RUN chown -R www:www /var/lib/nginx
-#RUN chown -R www:www /www
 
 EXPOSE 4000
 #CMD [ "/bin/bash" ]

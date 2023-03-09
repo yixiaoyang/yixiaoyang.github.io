@@ -53,7 +53,7 @@ owner:
   avatar: leonids-logo.png
   job: "technology & life"
   bio: "leon's blog site powered by jekyll"
-  email:
+  email: leon_e@qq.com
   disqus-shortname: leon
   twitter: #username
   facebook: #username
@@ -64,7 +64,7 @@ owner:
     ad-client:
     ad-slot:
   bing-verify:
-  github: #username
+  github: yixiaoyang
   gitlab: #username
   stackoverflow: #123456/username   from a "http://stackoverflow.com/users/123456/username" link
   linkedin: #username
