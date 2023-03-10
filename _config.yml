@@ -37,7 +37,7 @@ kramdown:
   input:          GFM
   hard_wrap:      false
   footnote_nr:    1
-  tab_width:      4
+  tab_width:      2
   css:            style
   extensions:
     - autolink
