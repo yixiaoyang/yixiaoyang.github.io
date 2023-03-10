@@ -119,6 +119,110 @@ func (observer *ChatObserver) OnNotify(e Event) {
 ```
 # pipeline模式
 
+```go
+package patterns
+
+func FanIn(input1, input2 <-chan int) <-chan int {
+	c := make(chan int)
+	go func() {
+		for {
+			c <- <-input1
+		}
+	}()
+
+	go func() {
+		for {
+			c <- <-input2
+		}
+	}()
+	return c
+}
+
+func FanIn2(input1, input2 <-chan int) <-chan int {
+	c := make(chan int)
+	go func() {
+		for {
+			select {
+			case v := <-input1:
+				c <- v
+			case v := <-input2:
+				c <- v
+			}
+		}
+	}()
+	return c
+}
+
+func FanOut(input <-chan int, outputs []chan<- int, exitChan <-chan int) {
+	for _, output := range outputs {
+		go func(out chan<- int) {
+			for {
+				select {
+				case v, ok := <-input:
+					{
+						if !ok {
+							return
+						}
+						out <- v
+					}
+				case <-exitChan:
+					{
+						return
+					}
+				}
+			}
+		}(output)
+	}
+}
+
+```
+
+# 访问者模式
+```go
+package patterns
+
+import (
+	"encoding/json"
+	"encoding/xml"
+	"fmt"
+)
+
+type Visitor func(Shape)
+type Shape interface {
+	Accept(Visitor)
+}
+
+type Circle struct {
+	R int
+}
+
+type Rectangle struct {
+	W int
+	H int
+}
+
+func (c *Circle) Accept(v Visitor) {
+	v(c)
+}
+
+func (c *Rectangle) Accept(v Visitor) {
+	v(c)
+}
+
+func JsonVisitor(s Shape) {
+	bytes, err := json.Marshal(s)
+	if err == nil {
+		fmt.Println(string(bytes))
+	}
+}
+
+func XmlVisitor(s Shape) {
+	bytes, err := xml.Marshal(s)
+	if err == nil {
+		fmt.Println(string(bytes))
+	}
+}
+```
 
 # 代码仓库
 
