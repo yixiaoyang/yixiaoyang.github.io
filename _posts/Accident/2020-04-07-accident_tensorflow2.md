@@ -3,7 +3,8 @@ author: leon
 comments: true
 date: 2020-04-07 17:40+00:00
 layout: post
-title: '[机器学习]交通事故预测模型(三) - Tensorflow2.0上的RNN模型建立'
+math: true
+title: '[机器学习] 重新分析交通事故数据预测模型(三) - Tensorflow2.0上的RNN模型建立'
 categories:
 - 机器学习
 tags:

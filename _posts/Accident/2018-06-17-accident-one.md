@@ -3,7 +3,8 @@ author: leon
 comments: true
 date: 2018-06-16 13:20:00+00:00
 layout: post
-title: '[机器学习]傻逼如我重新分析交通事故数据并建立预测模型(一) - 数据预处理'
+math: true
+title: '[机器学习] 重新分析交通事故数据并建立预测模型(一) - 数据预处理'
 categories:
 - 机器学习
 tags:

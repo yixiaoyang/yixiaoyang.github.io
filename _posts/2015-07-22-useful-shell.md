@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2014-01-21 10:37:25+00:00
 layout: post
+math: true
 title: '[Shell] 个人常用Shell集锦' 
 categories:
 - Shell

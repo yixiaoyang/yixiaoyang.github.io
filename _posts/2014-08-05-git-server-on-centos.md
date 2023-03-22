@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2014-05-08 10:00:05+00:00
 layout: post
+math: true
 title: 'Git Server on Centos via SSH' 
 categories:
 - 工具

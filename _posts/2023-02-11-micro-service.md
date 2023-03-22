@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2023-02-11 21:47+00:00
 layout: post
+math: true
 title: '[架构] 微服务演进历史回顾和服务拆分、服务接口的一些思考'
 categories:
 - 架构

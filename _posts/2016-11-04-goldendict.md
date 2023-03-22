@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-11-04 00:16:00+00:00
 layout: post
+math: true
 title: '为GoldenDict添加生词本功能及Anki制卡工具'
 categories:
 - cpp

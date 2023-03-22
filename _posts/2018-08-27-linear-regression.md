@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-08-27 19:16:05+00:00
 layout: post
+math: true
 title: '[机器学习]Linear Regression模型和优化方法'
 categories:
 - 机器学习

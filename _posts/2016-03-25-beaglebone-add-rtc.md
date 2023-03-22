@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-03-25 15:43:00+00:00
 layout: post
+math: true
 title: '[Beaglebone] 添加外接RTC DS1307支持' 
 categories:
 - Beaglebone

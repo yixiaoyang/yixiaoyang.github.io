@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-07-20 12:37:52+00:00
 layout: post
+math: true
 title: '[Beaglebone] BBB eeprom的擦写' 
 categories:
 - 嵌入式

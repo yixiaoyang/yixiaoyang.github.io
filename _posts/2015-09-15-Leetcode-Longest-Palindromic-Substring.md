@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-09-15 16:40:05+00:00
 layout: post
+math: true
 title: '[leetcode] Leetcode(5)-Manacher算法解决最大回文串问题' 
 categories:
 - leetcode

@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-07-24 11:11:20+00:00
 layout: post
+math: true
 title: '[搬运] SED单行脚本快速参考' 
 categories:
 - Shell

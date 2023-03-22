@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-05-26 10:27:00+00:00
 layout: post
+math: true
 title: '[设计模式]一个老生常谈的问题：业务控制、逻辑和数据的分离'
 categories:
 - 设计模式

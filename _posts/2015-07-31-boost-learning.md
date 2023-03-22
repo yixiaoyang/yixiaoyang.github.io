@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-8-2 19:30:25+00:00
 layout: post
+math: true
 title: '[CPP] Boost库概要' 
 categories:
 - c++

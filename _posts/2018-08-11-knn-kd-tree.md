@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-08-10 20:12:00+00:00
 layout: post
+math: true
 title: '[机器学习]KNN中的N和KD树结构'
 categories:
 - 机器学习

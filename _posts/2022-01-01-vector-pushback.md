@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2022-01-01 10:10+00:00
 layout: post
+math: true
 title: '[算法]关于vector的push_back扩容过程的经典问题'
 categories:
 - 算法

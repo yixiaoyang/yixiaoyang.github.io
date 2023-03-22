@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-05-20 12:31:00+00:00
 layout: post
+math: true
 title: '[设计模式]订阅-分发模式实现消息中心组件'
 categories:
 - 设计模式

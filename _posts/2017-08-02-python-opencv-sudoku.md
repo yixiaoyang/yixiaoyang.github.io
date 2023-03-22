@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2017-08-02 00:19:00+00:00
 layout: post
+math: true
 title: '[图像处理]基于Python Opencv的数独解析程序'
 categories:
 - 图像处理

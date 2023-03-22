@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2020-07-28 07:38+00:00
 layout: post
+math: true
 title: '[C++]撸一个线程池'
 categories:
 - C++

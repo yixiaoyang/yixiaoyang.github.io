@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-07-28 17:16:00+00:00
 layout: post
+math: true
 title: '[Python] 小型爬虫uSpider实现' 
 categories:
 - python

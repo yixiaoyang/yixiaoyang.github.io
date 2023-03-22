@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-07-27 18:25:00+00:00
 layout: post
+math: true
 title: '[机器学习]K均值聚类算法理解'
 categories:
 - 机器学习

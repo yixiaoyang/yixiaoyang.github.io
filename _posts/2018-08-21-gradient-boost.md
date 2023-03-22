@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-08-20 16:39:00+00:00
 layout: post
+math: true
 title: '[机器学习]Gradient Boost方法深入解读'
 categories:
 - 机器学习

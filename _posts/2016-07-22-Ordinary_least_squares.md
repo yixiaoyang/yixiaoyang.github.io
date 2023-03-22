@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-07-22 17:00:00+00:00
 layout: post
+math: true
 title: '[机器学习]普通最小二乘法的原理理解'
 categories:
 - 机器学习

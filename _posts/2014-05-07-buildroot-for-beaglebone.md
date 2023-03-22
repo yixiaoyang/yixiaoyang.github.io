@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2014-05-07 11:37:00+00:00
 layout: post
+math: true
 title: '[Beaglebone] U-boot and Buildroot for Beaglebone' 
 categories:
 - 嵌入式

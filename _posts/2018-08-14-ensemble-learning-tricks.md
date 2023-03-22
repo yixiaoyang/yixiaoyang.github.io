@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-08-14 12:35:00+00:00
 layout: post
+math: true
 title: '[机器学习]集成学习常用模型和方法'
 categories:
 - 机器学习

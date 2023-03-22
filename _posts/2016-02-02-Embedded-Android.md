@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-02-02 11:21:25+00:00
 layout: post
+math: true
 title: '[Android] Android驱动开发二三事' 
 categories:
 - Android

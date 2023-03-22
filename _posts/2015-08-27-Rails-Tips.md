@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-08-27 10:35:20+00:00
 layout: post
+math: true
 title: '[Rails] Ruby & Rails常用技巧集锦' 
 categories:
 - Ruby

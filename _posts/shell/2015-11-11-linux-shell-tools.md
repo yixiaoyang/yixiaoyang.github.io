@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-11-11 11:11:20+00:00
 layout: post
+math: true
 title: '[工具] Linux上的常用‘冷门’工具' 
 categories:
 - 工具

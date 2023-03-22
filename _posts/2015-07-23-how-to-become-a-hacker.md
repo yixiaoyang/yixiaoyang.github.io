@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2015-07-23 19:10:25+00:00
 layout: post
+math: true
 title: '[搬运] 如何成为一名黑客' 
 categories:
 - 计算机文化

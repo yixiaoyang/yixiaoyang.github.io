@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-01-06 08:29:20+00:00
 layout: post
+math: true
 title: '[Python] 一个抓取985/211大学院系里教师信息的爬虫小框架' 
 categories:
 - python

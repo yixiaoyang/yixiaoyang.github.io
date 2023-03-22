@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2018-05-21 16:28:00+00:00
 layout: post
+math: true
 title: '[设计模式]PIMPL惯用法分离内部实现和外部方法接口'
 categories:
 - 设计模式

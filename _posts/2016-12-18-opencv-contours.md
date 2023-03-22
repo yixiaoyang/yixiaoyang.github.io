@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-12-18 00:19:52+00:00
 layout: post
+math: true
 title: '利用opencv提取图片中矩形区域的一种方法'
 categories:
 - 图像处理

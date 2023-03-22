@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2019-10-09-+ 10:09:00+00:00
 layout: post
+math: true
 title: 'C++邪教徒的自我修养-《Modern C++ Design》笔记'
 categories:
 - Booklist

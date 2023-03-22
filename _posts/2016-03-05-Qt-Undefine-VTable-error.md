@@ -3,6 +3,7 @@ author: leon
 comments: true
 date: 2016-03-05 18:03:25+00:00
 layout: post
+math: true
 title: '[Qt] 关于Qt编译error: undefined reference to `vtable for xxx错误' 
 categories:
 - c++

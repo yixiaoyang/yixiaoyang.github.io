@@ -3,7 +3,8 @@ author: leon
 comments: true
 date: 2023-02-11 21:47+00:00
 layout: post
-title: '[go] 一些常用的go patttern'
+math: true
+title: '[go] 一些常用的go patterns'
 categories:
 - go
 tags:
@@ -12,7 +13,23 @@ tags:
 - 设计模式
 ---
 
-# 单例模式
+<!-- vscode-markdown-toc -->
+* [单例模式](#)
+* [耗时记录](#-1)
+* [观察者模式](#-1)
+* [pipeline模式](#pipeline)
+* [访问者模式](#-1)
+* [代码仓库](#-1)
+* [参考](#-1)
+
+<!-- vscode-markdown-toc-config
+	numbering=false
+	autoSave=true
+	/vscode-markdown-toc-config -->
+<!-- /vscode-markdown-toc -->
+
+
+## <a name=''></a>单例模式
 ```go
 package patterns
 
@@ -42,7 +59,7 @@ func NewSingleton() *Singleton {
 
 ```
 
-# 耗时记录
+## <a name='-1'></a>耗时记录
 ```go
 package patterns
 
@@ -62,7 +79,7 @@ func LongTimeWorking() {
 
 ```
 
-# 观察者模式
+## <a name='-1'></a>观察者模式
 ```go
 package patterns
 
@@ -117,7 +134,7 @@ func (observer *ChatObserver) OnNotify(e Event) {
 	observer.EventList.PushBack(e)
 }
 ```
-# pipeline模式
+## <a name='pipeline'></a>pipeline模式
 
 ```go
 package patterns
@@ -177,7 +194,7 @@ func FanOut(input <-chan int, outputs []chan<- int, exitChan <-chan int) {
 
 ```
 
-# 访问者模式
+## <a name='-1'></a>访问者模式
 ```go
 package patterns
 
@@ -224,9 +241,10 @@ func XmlVisitor(s Shape) {
 }
 ```
 
-# 代码仓库
+## <a name='-1'></a>代码仓库
 
 https://github.com/yixiaoyang/go-simplelib.git
 
-# 参考
+## <a name='-1'></a>参考
 - https://go.dev/blog/pipelines
+- https://refactoringguru.cn/design-patterns/go
