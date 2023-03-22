@@ -10,7 +10,7 @@ categories:
 - Beaglebone
 tags:
 - Beaglebone
-- C
+- C/C++
 - 嵌入式
 - 编程
 ---

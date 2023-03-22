@@ -7,7 +7,7 @@ slug: '%e5%b5%8c%e5%85%a5%e5%bc%8fc%e5%9f%ba%e7%a1%80%e5%a4%8d%e4%b9%a0'
 title: 嵌入式C基础复习
 wordpress_id: 216
 categories:
-- c
+- C/C++
 ---
 
 为对付公司内部的工程师能力考核，复习一下c，类似面试题目，你懂得。以下程序均通过简单的单元测试。

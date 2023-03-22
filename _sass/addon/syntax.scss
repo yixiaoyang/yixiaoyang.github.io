@@ -62,6 +62,8 @@ html {
   padding-bottom: 1rem;
 
   pre {
+    tab-size: 2;
+    -moz-tab-size: 2;
     margin-bottom: 0;
     font-size: $code-font-size;
     line-height: 1.4rem;
@@ -70,6 +72,8 @@ html {
 
   table {
     td pre {
+      tab-size: 2;
+      -moz-tab-size: 2;
       overflow: visible; /* Fixed iOS safari overflow-x */
       word-break: normal; /* Fixed iOS safari linenos code break */
     }

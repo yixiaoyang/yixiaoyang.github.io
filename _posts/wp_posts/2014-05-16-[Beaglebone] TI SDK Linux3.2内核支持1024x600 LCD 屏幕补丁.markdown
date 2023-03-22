@@ -11,7 +11,7 @@ categories:
 
 tags:
 - Beaglebone
-- C
+- C/C++
 - Linux
 - 嵌入式
 ---

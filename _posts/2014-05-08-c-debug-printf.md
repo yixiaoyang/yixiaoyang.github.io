@@ -6,9 +6,9 @@ layout: post
 math: true
 title: '[C] Debug Printf和大小端测试范例' 
 categories:
-- c
+- C/C++
 tags:
-- c
+- C/C++
 ---
 
 

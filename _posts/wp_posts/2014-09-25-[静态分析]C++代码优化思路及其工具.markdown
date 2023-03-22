@@ -9,7 +9,7 @@ wordpress_id: 342
 categories:
 - cpp
 tags:
-- C
+- C/C++
 - 测试
 ---
 

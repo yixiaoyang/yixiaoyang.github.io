@@ -6,9 +6,9 @@ layout: post
 math: true
 title: '[c++]C++工程常用高级特性小本子'
 categories:
-- c++
+- C/C++++
 tags:
-- c++
+- C/C++++
 ---
 
 <!-- TOC -->
@@ -49,8 +49,8 @@ tags:
 - Discovering Modern CPP
 - Effective Modern C++
 - Effective C++
-- C++标准/Working Draft, Standard for Programming Language C++
-- C++工程实践经验谈 by陈硕(giantchen@gmail.com)
+- C/C++++标准/Working Draft, Standard for Programming Language C++
+- C/C++++工程实践经验谈 by陈硕(giantchen@gmail.com)
 
 
 # 内存

@@ -9,7 +9,7 @@ categories:
 - Android
 tags:
 - Android
-- c++
+- C/C++++
 ---
 
 Android在嵌入式开发中越来越常见。底层出了linux内核基础的东西外，加了很多中间层的东西。大概梳理一下会遇到的一些问题。

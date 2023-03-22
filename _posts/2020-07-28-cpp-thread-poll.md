@@ -6,9 +6,9 @@ layout: post
 math: true
 title: '[C++]撸一个线程池'
 categories:
-- C++
+- C/C++++
 tags:
-- C++
+- C/C++++
 ---
 
 # 线程池的简单实现

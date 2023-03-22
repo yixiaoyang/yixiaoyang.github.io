@@ -6,9 +6,9 @@ layout: post
 math: true
 title: '[Qt] 关于Qt编译error: undefined reference to `vtable for xxx错误' 
 categories:
-- c++
+- C/C++++
 tags:
-- c++
+- C/C++++
 ---
 
 ref: [http://stackoverflow.com/questions/13121310/adding-signal-to-custom-qthread](http://stackoverflow.com/questions/13121310/adding-signal-to-custom-qthread)

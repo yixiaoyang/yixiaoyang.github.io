@@ -7,10 +7,10 @@ slug: '%e3%80%90%e6%90%ac%e8%bf%90%e3%80%91c%e6%b5%ae%e7%82%b9%e6%95%b0%e6%af%94
 title: C浮点数比较.考试
 wordpress_id: 189
 categories:
-- c
+- C/C++
 
 tags:
-- C
+- C/C++
 - 笔试
 ---
 

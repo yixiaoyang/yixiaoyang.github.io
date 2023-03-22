@@ -13,21 +13,6 @@ tags:
 - 设计模式
 ---
 
-<!-- vscode-markdown-toc -->
-* [单例模式](#)
-* [耗时记录](#-1)
-* [观察者模式](#-1)
-* [pipeline模式](#pipeline)
-* [访问者模式](#-1)
-* [代码仓库](#-1)
-* [参考](#-1)
-
-<!-- vscode-markdown-toc-config
-	numbering=false
-	autoSave=true
-	/vscode-markdown-toc-config -->
-<!-- /vscode-markdown-toc -->
-
 
 ## <a name=''></a>单例模式
 ```go

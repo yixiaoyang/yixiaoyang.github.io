@@ -9,7 +9,7 @@ categories:
 - 设计模式
 tags:
 - 设计模式
-- c++
+- C/C++++
 ---
 
 主要思想是使用`pointer to implementation`惯用法将类内部数据或者方法使用一个implementation隐藏起来。在 `Efficient Mordern C++`一书中 `Item 22: When using the Pimpl Idiom, define special member functions in the implementation file`.有详细讲解。
