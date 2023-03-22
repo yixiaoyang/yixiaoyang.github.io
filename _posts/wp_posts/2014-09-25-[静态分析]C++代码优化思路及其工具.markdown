@@ -7,7 +7,7 @@ slug: '%e9%9d%99%e6%80%81%e5%88%86%e6%9e%90c%e4%bb%a3%e7%a0%81%e4%bc%98%e5%8c%96
 title: '[静态分析]C++代码优化思路及其工具'
 wordpress_id: 342
 categories:
-C++
+- C++
 tags:
 - C/C++
 - 测试
