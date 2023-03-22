@@ -9,7 +9,6 @@ wordpress_id: 213
 categories:
 - Ruby
 tags:
-- Biz
 - Rails
 ---
 

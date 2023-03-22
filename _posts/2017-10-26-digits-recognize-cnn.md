@@ -9,7 +9,7 @@ categories:
 - leetcode
 tags:
 - 机器学习
-- tensorflow
+- TensorFlow
 - 神经网络
 ---
 

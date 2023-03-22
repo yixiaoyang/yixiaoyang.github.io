@@ -9,7 +9,6 @@ wordpress_id: 279
 categories:
 - Ruby
 tags:
-- Ajax
 - Rails
 - Ruby
 ---

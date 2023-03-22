@@ -9,7 +9,6 @@ wordpress_id: 123
 categories:
 - 软件工程
 tags:
-- IDE
 - 编程
 ---
 

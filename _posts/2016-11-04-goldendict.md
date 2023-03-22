@@ -6,11 +6,11 @@ layout: post
 math: true
 title: '为GoldenDict添加生词本功能及Anki制卡工具'
 categories:
-- cpp
+C++
 - 工具
 tags:
 - 工具
-- cpp
+C++
 ---
 
 

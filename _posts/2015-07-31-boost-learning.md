@@ -6,9 +6,9 @@ layout: post
 math: true
 title: '[CPP] Boost库概要' 
 categories:
-- C/C++++
+- C/C++
 tags:
-- C/C++++
+- C/C++
 ---
 
 
