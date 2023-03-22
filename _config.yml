@@ -21,11 +21,9 @@ timezone: Asia/Shanghai
 
 title: Leon's Blog # the main title
 
-tagline: |
-  公元前我们太小
-  公元后我们又太老
-  没有人见到那一次真正美丽的微笑
-
+tagline: "公元前我们太小\n\
+  公元后我们又太老\n\
+  没有人见到那一次真正美丽的微笑"
 
 description: >- # used by seo meta and the atom feed
   Leon's blog site powered by jekyll.
