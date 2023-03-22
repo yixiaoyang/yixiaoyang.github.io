@@ -17,11 +17,11 @@ K-Means聚类的目的是：把n个点（可以是样本的一次观察或一个
 K-Means计算是`NP-困难`的，不过可借助启发式策略快速收敛出一个局部最优解。
 
 ### 算法过程
-已知观察集(x1,x2,...,xn),每个观察集都是d维矢量，k-平均聚类要把这n个观测划分到k个集合中(k≤n),`使得组内平方和（WCSS within-cluster sum of squares）最小`，即它的目标是找到使得下式满足的聚类`Si`：
+已知观察集$(x_1,x_2,...,x_n)$,每个观察集都是d维矢量，k-平均聚类要把这n个观测划分到k个集合中(k≤n),`使得组内平方和（WCSS within-cluster sum of squares）最小`，即它的目标是找到使得下式满足的聚类`Si`：
 
-<img src="http://latex.codecogs.com/svg.latex?{arg\ min} f({S_i})= \sum_{i=1}^{k} \sum_{j=1}^{n}\|x_j-C_i\|^2">
+$$ {arg\ min} f({S_i})= \sum_{i=1}^{k} \sum_{j=1}^{n}\|x_j-C_i\|^2 $$
 
-其中Ci为类Si类中所有点的均值，即当前类的`聚类中心`。`arg min`,表示使目标函数f(Si)取最小值时的变量值。
+其中Ci为类Si类中所有点的均值，即当前类的`聚类中心`。$arg_{min}$,表示使目标函数f(Si)取最小值时的变量值。
 
 1. 首先为聚类任意选出k个初始化的的`聚类中心`，每个观察对象被分类到与`聚类中心`最近的聚类中
 2. 接着使用当前聚类中的观察对象的`均值`，重新计算`聚类中心`.
@@ -30,7 +30,7 @@ K-Means计算是`NP-困难`的，不过可借助启发式策略快速收敛出�
 
 用下面的gif图更好理解：
 
-![kmeans_thumb2.gif](http://cdn4.snapgram.co/images/2016/07/26/kmeans_thumb2.gif)
+![kmeans11.gif](/images/kmeans11.gif)
 
 ### K-Means算法进行Iris数据聚类
 
@@ -258,7 +258,7 @@ if __name__ == "__main__":
 #### 欧式距离（Euclidean distance）
 在数学中，欧几里得距离或欧几里得度量是欧几里得空间中两点间“普通”（即直线）距离。使用这个距离，欧氏空间成为度量空间。相关联的范数称为欧几里得范数。较早的文献称之为毕达哥拉斯度量。在欧几里得空间中，点x =(x1,...,xn)和 y =(y1,...,yn)之间的欧氏距离为：
 
-<img src="http://latex.codecogs.com/svg.latex?dis(x,y)=\sqrt{\sum_{i=1}^n {(x_i-y_i)^2}}">
+$$ dis(x,y)=\sqrt{\sum_{i=1}^n {(x_i-y_i)^2}} $$
 
 ### 参考
 iris数据集：http://archive.ics.uci.edu/ml/datasets/Iris  

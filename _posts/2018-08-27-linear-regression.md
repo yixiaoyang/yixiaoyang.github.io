@@ -57,9 +57,9 @@ $$
 尝试展开L(w)有
 
 $$
-L(w) = {||y-Xw||}^2 \\
-= {(y-Xw)}^T(y-Xw) \\
-= y^Ty-(Xw)^Ty-y^TXw+(Xw)^T(Xw) \\
+L(w) = {||y-Xw||}^2 \newline
+= {(y-Xw)}^T(y-Xw) \newline
+= y^Ty-(Xw)^Ty-y^TXw+(Xw)^T(Xw) \newline
 = y^Ty - 2w^TX^Ty + w^TX^TXw
 $$
 

@@ -28,16 +28,17 @@ tags:
 > it meant.
 
 首先，定义一下信息量。如果有一个样本S内存在多个事件X = {x1,x2..,xn}，每个事件的概率分布P = {p1, ..., pn}，则每个事件本身的讯息（自信息）为：
-<img src="http://latex.codecogs.com/svg.latex?I(x_i)=-log_{2}{p(x_i)}">。
+
+$$ I(x_i)=-log_{2}{p(x_i)} $$
 
 例如英语有26个字母，假如每个字母在文章中出现次数平均的话，每个字母的讯息量为：
-<img src="http://latex.codecogs.com/svg.latex?I(x_i)=-log_{2}{\frac{1}{26}}=4.7">。
+$$ I(x_i)=-log_{2}{\frac{1}{26}}=4.7 $$
 
 为了计算熵（entropy），则需要将每个状态的信息量加上去即：
-<img src="http://latex.codecogs.com/svg.latex?H(X)=-\sum_{i=1}^{n}{p(x_i)}{log_2{p(x_i)}}">。
+$$ H(X)=-\sum_{i=1}^{n}{p(x_i)}{log_2{p(x_i)}} $$
 
 而一个特定的属性分割训练集而导致熵降低，就是信息增益（infomation gain）的概念。对于系统S当前状态下的熵为`H(X)`，在其特征X中引入新的特征Y进行分割后的熵为`H(X|Y)`。因此特征Y的信息增益为：
-<img src="http://latex.codecogs.com/svg.latex?IG(X|Y)=H(X)-H(X|Y)=H(X)-\sum_{y \epsilon Y}{\frac{|S_y|}{|S|}H(S_y)}">。
+$$ IG(X|Y)=H(X)-H(X|Y)=H(X)-\sum_{y \epsilon Y}{\frac{|S_y|}{|S|}H(S_y)} $$
 
 其中\|S\|表示样本总数目，\|Sy\|表示特征y在样本S中的数目。
 
@@ -155,7 +156,7 @@ IG(play|windy) = 0.048
 ##### 第二步：左子节点各属性增益计算
 
 从第一步用‘outlook’属性分出了三个子节点分支，‘sunny’，‘overcast’和‘rainy’。先从左子节点开始计算。  
-先从集合D(outlook=sunny) = {D1,D2,D8,D9,D11}分支开始计算。此分支信息量`H(play|o=sunny) = 0.971`
+先从集合$D(outlook=sunny) = {D1,D2,D8,D9,D11}$分支开始计算。此分支信息量 $H(play|o=sunny) = 0.971$
 
 |day|outlook|temperature|humidity|windy|play|
 |-|-|-|-|-|-|
@@ -184,8 +185,6 @@ IG(play|temperature) = H(play|o=sunny) - H(play|temperature) = 0.971 - 0.4 = 0.5
 IG(play|windy) = H(play|o=sunny) - H(play|windy) = 0.971 - 0.951 = 0.02
 ```
 因此，此节点选择(humidity)作为判断属性。依次类推递归计算信息增量选择判断属性直到划分完毕（直到所有节点都是`纯`的，熵为0，划分结束）。
-
-![decision-tree-demo2.png](http://cdn2.snapgram.co/imgs/2017/03/01/decision-tree-demo2.png)
 
 
 ### ID3算法的问题和ID4.5算法
@@ -217,10 +216,10 @@ ID4.5为ID3算法的升级版，主要改进是使用了信息增益比而不是
 
 ##### ID3算法改进3：使用信息增益比消除信息增益的偏袒
 信息增益比（Gain Ratio）引入“分裂信息（Split Information）”的项作为惩罚因子，对分裂属性的广度和均匀度进行衡量。
-<img src="http://latex.codecogs.com/svg.latex?SplitInfo(S,Y)=-\sum_{i=1}^{n}{\frac{|S_i|}{|S|}log_2{\frac{|S_i|}{|S|}}}">。  
-其中属性Y将样本S分割成`{S1,S2..Sn}`等n个子样本集。分裂信息计算实际上就是样本S关于属性Y的熵。
+$$ SplitInfo(S,Y)=-\sum_{i=1}^{n}{\frac{|S_i|}{|S|}log_2{\frac{|S_i|}{|S|}}} $$  
+其中属性Y将样本S分割成${S_1,S_2..S_n}$等n个子样本集。分裂信息计算实际上就是样本S关于属性Y的熵。
 
-信息增益比则为：<img src="http://latex.codecogs.com/svg.latex?IGR(S,Y)=\frac{IG(S,Y)}{SplitInfo(S,Y)}">
+信息增益比则为：$$ IGR(S,Y)=\frac{IG(S,Y)}{SplitInfo(S,Y)} $$ 
 
 
 ### 决策树的优缺点
