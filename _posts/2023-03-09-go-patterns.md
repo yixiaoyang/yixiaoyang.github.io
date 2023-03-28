@@ -4,7 +4,7 @@ comments: true
 date: 2023-02-11 21:47+00:00
 layout: post
 math: true
-title: '[go] 一些常用的go patterns'
+title: '[go] 常用go编程模式'
 categories:
 - go
 tags:
