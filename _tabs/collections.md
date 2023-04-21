@@ -20,3 +20,8 @@ order: 4
 ## DNN & AI
 - [A Survey on Deep Neural Network Partition over Cloud, Edge and End Devices](https://arxiv.org/pdf/2304.10020.pdf)
 - [Toward Highly Available,  Intelligent Cloud and ML Systems(字节ppt 2018)](https://sysnetome.com/Talks/cguo_netai_2018.pdf)
+- [A Survey on Distributed Evolutionary Computation](https://arxiv.org/ftp/arxiv/papers/2304/2304.05811.pdf)
+
+## AIGC
+- [One Small Step for Generative AI, One Giant Leap for AGI: A Complete Survey on ChatGPT in AIGC Era](https://arxiv.org/pdf/2304.06488.pdf)
+- [AI-Generated Content (AIGC): A Survey](https://arxiv.org/pdf/2304.06632.pdf)
