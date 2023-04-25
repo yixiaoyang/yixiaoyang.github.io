@@ -5,9 +5,9 @@ date: 2023-03-27 18:09+00:03
 layout: post
 math: true
 toc: true
-title: '[深度学习] 对话系统系列技术文章-召回（向量检索）'
+title: '[NLP] 对话系统系列技术文章-召回（向量检索）'
 categories:
-- 深度学习
+- NLP
 tags:
 - 算法
 - 深度学习

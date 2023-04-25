@@ -5,9 +5,9 @@ date: 2023-03-27 18:09+00:00
 layout: post
 math: true
 toc: true
-title: '[深度学习] transformer原理和论文解读'
+title: '[NLP] transformer原理和论文解读'
 categories:
-- 深度学习
+- NLP
 tags:
 - 算法
 - 深度学习
