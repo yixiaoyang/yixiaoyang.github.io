@@ -38,6 +38,8 @@ tags:
 - Word2Vec
 - Glove（Global Vectors）
 
+在自然语言处理领域，单词的密集向量表示称为词嵌入（word embedding）或者单词的分布式表示（distributed representation）。过去，将基于计数的方法获得的单词向量称为distributional representation，将使用神经网络的基于推理的方法获得的单词向量称为distributed representation。不过，中文里二者都译为“分布式表示”。
+
 ## 分布式表示方法
 
 ![两种分布式表示处理方法对比](/images/nlp/word2vec/word-distributed-representation.jpg)
@@ -47,13 +49,13 @@ tags:
 
 #### CBOW模型
 
-##### 模型结构
-
 CBOW 模型是根据上下文预测目标词的神经网络（“目标词”是指中间的单词，它周围的单词是“上下文”）。
+
+##### 模型结构
 
 ![Continuous bag-of-word model](/images/nlp/word2vec/CBOW-network.jpg)
 
-中间层的神经元是各个输入层经全连接层变换后得到的值的“平均”。就上面的例子而言，经全连接层变换后，第 1 个输入层转化为 h1，第 2 个输入层转化为 h2，那么中间层的神经元是 1/2(h1 + h2)。最后是图 中的输出层，这个输出层有 7 个神经元。这里重要的是，这些神经元对应于各个单词。输出层的神经元是各个单词的得分，它的值越大，说明对应单词的出现概率就越高。得分是指在被解释为概率之前的值，对这些得分应用 Softmax 函数，就可以得到概率。
+模型中间层的神经元是各个输入层经全连接层变换后得到的值的“平均”。就上面的例子而言，经全连接层变换后，第 1 个输入层转化为 h1，第 2 个输入层转化为 h2，那么中间层的神经元是 1/2(h1 + h2)。最后是图 中的输出层，这个输出层有 7 个神经元。这里重要的是，这些神经元对应于各个单词。输出层的神经元是各个单词的得分，它的值越大，说明对应单词的出现概率就越高。得分是指在被解释为概率之前的值，对这些得分应用 Softmax 函数，就可以得到概率。
 
 ![Continuous bag-of-word model](/images/nlp/word2vec/CBOW-win.jpg)
 
@@ -81,11 +83,37 @@ Word2Vec 中使用的网络有两个权重，分别是输入侧的全连接层�
 
 #### Skip-Gram模型
 
-![Skip-Gram model](/images/nlp/word2vec/Skip-Gram.jpg)
+CBOW 模型从上下文的多个单词预测中间的单词（目标词），而 skip-gram 模型则从中间的单词（目标词）预测周围的多个单词（上下文），其网络结构模型如下图所示。
+
+![Skip-Gram model](/images/nlp/word2vec/Skip-Gram-network.jpg)
+
+就效果而言，在大多数情况下，skip-gram 模型的结果更好。特别是随着语料库规模的增大，在低频词和类推问题的性能方面，skip-gram 模型往往会有更好的表现；
+就学习速度而言，CBOW 模型比 skip-gram 模型要快。这是因为 skip-gram 模型需要根据上下文数量计算相应个数的损失，计算成本变大。
 
 #### Word2Vec高速化
 
-##### Embedding层
+以CBOW为例，考虑一下Word2Vec的神经网络计算过程，不难发现随着输入量（单词数目）的增大，以下几个计算过程将存在瓶颈：
+- A. 输入层（输入层one-hot向量，随着单词数目增加向量增大）和 $W_{in}$ 的矩阵计算
+- B. 隐藏层 和 $ W_{out} $ 的矩阵计算
+- C. 输出层的Softmax计算
+
+![Skip-Gram model](/images/nlp/word2vec/Word2Vec-Optimizing-CBOW.jpg)
+
+针对A问题，一般引入embedding层优化。针对问题B、C使用负采样方式解决。
+
+##### Embedding
+
+![Skip-Gram model](/images/nlp/word2vec/one-hot.png)
+
+当单词数目增加时，One-Hot编码的向量将是一个巨大的稀疏矩阵。Embedding层则是将离散实例连续化的映射，通过embedding算法可以将离散词向量（如One-Hot编码，稀疏矩阵）映射成一个连续稠密向量。在这里引入Embedding层的目的是为了降维（当然embedding层可以用来升维增加特征细节），常见的降维算法包括但不限于：
+- 经典降维方法：如主成分分析（PCA）
+- 经典矩阵分解方法：如奇异值分解（SVD）
+- 基于内容的embedding方法：如静态向量 embedding（如 word2vec、GloVe 和 FastText）和动态向量 embedding（如 ELMo、GPT 和 BERT）
+- 基于Graph的embedding方法：图数据的 embedding 方法，包括浅层图模型（如 DeepWalk、Node2vec 和 Metapath2vec）和深度图模型（如基于谱的 GCN 和基于空间的 GraphSAGE）等
+
+什么样的数据什么任务可以使用embedding层？
+
+![](/images/allthethings.gif)
 
 ##### 层次Softmax（hierarchical softmax）
 
@@ -94,7 +122,6 @@ Word2Vec 中使用的网络有两个权重，分别是输入侧的全连接层�
 ### 基于计数的Glove
 
 基于计数的思路是使用整个语料库的统计数据（共现矩阵和PPMI等），经过一次降维处理（奇异值分解SVD、非负矩阵分解NMF、主成分分析PCA等常用方法）获得单词的分布式表示。
-
 
 $J = \sum_{i,j=1}^V f(P_{ij})(\mathbf{w}_i^T\mathbf{w}j + b_i + b_j - \log P{ij})^2$
 
@@ -106,3 +133,6 @@ $J = \sum_{i,j=1}^V f(P_{ij})(\mathbf{w}_i^T\mathbf{w}j + b_i + b_j - \log P{ij}
 - [Glove算法原理及其简单理解](https://zhuanlan.zhihu.com/p/50946044)
 - [Tying Word Vectors and Word Classifiers: A Loss Framework for Language Modeling](https://arxiv.org/abs/1611.01462)
 - 《深度学习进阶：自然语言处理》
+- [Embeddings in Machine Learning: Everything You Need to Know](https://www.featureform.com/post/the-definitive-guide-to-embeddings)
+- [https://www.tensorflow.org/text/guide/word_embeddings](https://www.tensorflow.org/text/guide/word_embeddings)
+- [用万字长文聊一聊 Embedding 技术](https://cloud.tencent.com/developer/article/1749306)
