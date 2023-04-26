@@ -22,7 +22,7 @@ tags:
 
 过去多年最常用的向量化方式是基于统计的离散方法表示，如独热编码（One-hot Representation）、词频-逆文本（TF-IDF）、词袋模型（Bag of Words）、N-gram等。
 
-2013年，Word2Vec横空出世（相关论文见 #参考文档），自然语言处理领域各项任务效果均得到极大提升。自从Word2Vec这个神奇的算法模型出世以后，导致了一波嵌入（Embedding）热，基于句子、文档表达的word2vec、doc2vec算法，基于物品序列的item2vec算法，基于图模型的图嵌入技术相继诞生。Distributed Representation 逐渐流行起来。
+2013年，Word2Vec横空出世（相关论文见 #参考文档），自然语言处理领域各项任务效果均得到极大提升。自从Word2Vec这个神奇的算法模型出世以后，导致了一波嵌入（Embedding）热，基于句子、文档表达的Word2Vec、doc2vec算法，基于物品序列的item2vec算法，基于图模型的图嵌入技术相继诞生。Distributed Representation 逐渐流行起来。
 
 小结一下主流的文本向量化方法。
 
@@ -40,20 +40,48 @@ tags:
 
 ## 分布式表示方法
 
-![两种分布式表示处理方法对比](/images/nlp/word-distributed-representation.jpg)
+![两种分布式表示处理方法对比](/images/nlp/word2vec/word-distributed-representation.jpg)
 
 ### 基于推理的Word2Vec
-基于推理的方法是使用神经网络，通常在mini-batch数据上进行学习，每次只看一部分学习数据，并反复更新权重。
-
-Word2Vec有两种此训练模型： CBOW（Continuous Bag-of-Word）和Skip-Gram。
+基于推理的方法是使用神经网络，通常在mini-batch数据上进行学习，每次只看一部分学习数据，并反复更新权重。Word2Vec有两种训练模型： CBOW（Continuous Bag-of-Word）和Skip-Gram。
 
 #### CBOW模型
 
-![Continuous bag-of-word model](/images/nlp/CBOW.jpg)
+##### 模型结构
+
+CBOW 模型是根据上下文预测目标词的神经网络（“目标词”是指中间的单词，它周围的单词是“上下文”）。
+
+![Continuous bag-of-word model](/images/nlp/word2vec/CBOW-network.jpg)
+
+中间层的神经元是各个输入层经全连接层变换后得到的值的“平均”。就上面的例子而言，经全连接层变换后，第 1 个输入层转化为 h1，第 2 个输入层转化为 h2，那么中间层的神经元是 1/2(h1 + h2)。最后是图 中的输出层，这个输出层有 7 个神经元。这里重要的是，这些神经元对应于各个单词。输出层的神经元是各个单词的得分，它的值越大，说明对应单词的出现概率就越高。得分是指在被解释为概率之前的值，对这些得分应用 Softmax 函数，就可以得到概率。
+
+![Continuous bag-of-word model](/images/nlp/word2vec/CBOW-win.jpg)
+
+全连接层的权重 $ W_{in} $ 是一个 7 × 3 的矩阵，这个权重就是单词的分布式表示。权重$ W_{in} $的各行保存着各个单词的分布式表示。通过反复学习，不断更新各个单词的分布式表示，以正确地从上下文预测出应当出现的单词。令人惊讶的是，如此获得的向量很好地对单词含义进行了编码。这就是 Word2Vec 的全貌。
+
+> 中间层的神经元数量比输入层少这一点很重要。中间层需要将预测单词所需的信息压缩保存，从而产生密集的向量表示。这时，中间层被写入了我们人类无法解读的代码，这相当于“编码”工作。而从中间层的信息获得期望结果的过程则称为“解码”。这一过程将被编码的信息复原为我们可以理解的形式。
+> 
+>  《深度学习进阶：自然语言处理》 Section 3.2 *简单的Word2Vec* Page 103
+
+##### 模型学习过程
+
+CBOW 模型的学习就是调整权重，以使预测准确。其结果是，权重$ W_{in} $（确切地说是 $ W_{in} $ 和 $ W_{out} $ 两者）学习到蕴含单词出现模式的向量。
+
+![Continuous bag-of-word model](/images/nlp/word2vec/CBOW-learning1.jpg)
+
+Word2Vec 中使用的网络有两个权重，分别是输入侧的全连接层的权重（$ W_{in} $）和输出侧的全连接层的权重（$ W_{out} $）。一般而言，输入侧的权重 $ W_{in} $ 的每一行对应于各个单词的分布式表示。另外，输出侧的权重 $ W_{out} $ 也同样保存了对单词含义进行了编码的向量。只是，输出侧的权重在列方向上保存了各个单词的分布式表示。
+
+使用哪个权重作为单词的分布式表示呢？这里有三个选项。
+- A. 只使用输入侧的权重
+- B. 只使用输出侧的权重
+- C. 同时使用两个权重
+
+就 Word2Vec（特别是 skip-gram 模型）而言，最受欢迎的是方案 A。许多研究中也都仅使用输入侧的权重 $ W_{in} $ 作为最终的单词的分布式表示。在与 Word2Vec 相似的 GloVe方法中，通过将两个权重相加，也获得了良好的结果。
+
 
 #### Skip-Gram模型
 
-![Skip-Gram model](/images/nlp/Skip-Gram.jpg)
+![Skip-Gram model](/images/nlp/word2vec/Skip-Gram.jpg)
 
 #### Word2Vec高速化
 
@@ -74,5 +102,7 @@ $J = \sum_{i,j=1}^V f(P_{ij})(\mathbf{w}_i^T\mathbf{w}j + b_i + b_j - \log P{ij}
 
 - [Distributed Representations of Sentences and Documents]()
 - [Efficient Estimation of Word Representations in Vector Space](https://arxiv.org/abs/1301.3781v3)
-- [word2vec Parameter Learning Explained](https://www.researchgate.net/publication/268226652_word2vec_Parameter_Learning_Explained)
+- [Word2Vec Parameter Learning Explained](https://www.researchgate.net/publication/268226652_Word2Vec_Parameter_Learning_Explained)
 - [Glove算法原理及其简单理解](https://zhuanlan.zhihu.com/p/50946044)
+- [Tying Word Vectors and Word Classifiers: A Loss Framework for Language Modeling](https://arxiv.org/abs/1611.01462)
+- 《深度学习进阶：自然语言处理》
