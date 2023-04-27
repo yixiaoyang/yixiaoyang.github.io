@@ -33,14 +33,33 @@ tags:
 - 词袋模型（Bag of Words）
 - N-gram
 
-**分布式表示方法：**
+**基于聚类的分布式表示**
+
+**基于神经网络的分布式表示方法：**
 
 - Word2Vec
 - Glove（Global Vectors）
+- FastText（facebook）
 
 在自然语言处理领域，单词的密集向量表示称为词嵌入（word embedding）或者单词的分布式表示（distributed representation）。过去，将基于计数的方法获得的单词向量称为distributional representation，将使用神经网络的基于推理的方法获得的单词向量称为distributed representation。不过，中文里二者都译为“分布式表示”。
 
-## 分布式表示方法
+## Word Embedding
+
+![Skip-Gram model](/images/nlp/word2vec/one-hot.png)
+
+当单词数目增加时，传统的One-Hot编码的向量将是一个巨大的稀疏矩阵。Embedding层则是将离散实例连续化的映射，通过Embedding算法可以将离散词向量（如One-Hot编码，稀疏矩阵）映射成一个连续稠密向量。在这里引入Embedding层的目的是为了降维（当然Embedding层可以用来升维增加特征细节），常见的降维算法包括但不限于：
+- 经典降维方法：如主成分分析（PCA）
+- 经典矩阵分解方法：如奇异值分解（SVD）
+- 基于神经网络的方法：如静态向量 embedding（如 word2vec、GloVe 和 FastText）和动态向量 embedding（如 ELMo、GPT 和 BERT）
+- 基于Graph的embedding方法：图数据的 embedding 方法，包括浅层图模型（如 DeepWalk、Node2vec 和 Metapath2vec）和深度图模型（如基于谱的 GCN 和基于空间的 GraphSAGE）等
+
+![Skip-Gram model](/images/nlp/word2vec/embedding2.png)
+
+什么样的数据什么任务可以使用embedding层？
+
+![](/images/allthethings.gif)
+
+## 分布式表示的方法
 
 ![两种分布式表示处理方法对比](/images/nlp/word2vec/word-distributed-representation.jpg)
 
@@ -99,25 +118,18 @@ CBOW 模型从上下文的多个单词预测中间的单词（目标词），而
 
 ![Skip-Gram model](/images/nlp/word2vec/Word2Vec-Optimizing-CBOW.jpg)
 
-针对A问题，一般引入embedding层优化。针对问题B、C使用负采样方式解决。
+针对A问题，一般引入embedding层优化。针对问题B、C使用层次Softmax和负采样方式解决。
 
-##### Embedding
 
-![Skip-Gram model](/images/nlp/word2vec/one-hot.png)
+##### 层次Softmax（Hierarchical Softmax）
 
-当单词数目增加时，One-Hot编码的向量将是一个巨大的稀疏矩阵。Embedding层则是将离散实例连续化的映射，通过embedding算法可以将离散词向量（如One-Hot编码，稀疏矩阵）映射成一个连续稠密向量。在这里引入Embedding层的目的是为了降维（当然embedding层可以用来升维增加特征细节），常见的降维算法包括但不限于：
-- 经典降维方法：如主成分分析（PCA）
-- 经典矩阵分解方法：如奇异值分解（SVD）
-- 基于内容的embedding方法：如静态向量 embedding（如 word2vec、GloVe 和 FastText）和动态向量 embedding（如 ELMo、GPT 和 BERT）
-- 基于Graph的embedding方法：图数据的 embedding 方法，包括浅层图模型（如 DeepWalk、Node2vec 和 Metapath2vec）和深度图模型（如基于谱的 GCN 和基于空间的 GraphSAGE）等
+相对于原始Softmax计算每个单词的向量，层次Softmax（Hierarchical Softmax）使用一颗二叉树来得到每个单词的概率。被验证的效果最好的二叉树类型就是霍夫曼树（Huffman Tree），哈夫曼树保证词频较大的词处于相对浅的层，词频较低的词处于较深的叶子节点，每个词都是哈夫曼树上的一个叶子节点。
 
-什么样的数据什么任务可以使用embedding层？
+基于哈夫曼树的Softmax将原本的$|V|$分类问题（V为单词量），转化为$log|V|$次二分类问题。同样是计算单词$w_t$在上下文的概率，在层次Softmax中变成在哈夫曼树中寻找一条从根节点到目的单词叶子节点的路径，在每一个中间节点都有一次二分类计算（LR分类器）。
 
-![](/images/allthethings.gif)
+##### 负采样（Negative Sampling）
 
-##### 层次Softmax（hierarchical softmax）
-
-##### 负采样（hierarchical softmax）
+负采样利用相对简单的随机负采样，能大幅提升性能，因而可以作为Hierarchical Softmax的一种替代。
 
 ### 基于计数的Glove
 
